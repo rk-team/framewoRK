@@ -81,3 +81,14 @@ ul.pres,
 	background-color: transparent;
 	border: none;
 }
+
+.warning {
+	background-image: url(../images/warning.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 75px;
+	min-height: 70px;
+	margin: 15px;
+	border: 1px solid #ffaa99;
+	display: inline-block;
+}
