@@ -45,7 +45,7 @@
 <h3>Arborescence d'un nouveau projet</h3>
 
 <div class="block">
-	<img src="/uploads/arborescence.png" class="illu" />
+	<img src="/images/arborescence.png" class="illu" />
 	
 	<ul class="pres">
 		<li>
@@ -88,7 +88,7 @@
 <h3>Construction de l'affichage</h3>
 
 <div class="block">
-	<img src="/uploads/construction_affichage.png" class="illu" />
+	<img src="/images/construction_affichage.png" class="illu" />
 	<div class="pres">
 		<div>L'affichage d'une page est géré grâce à des templates imbriqués :</div>
 		<ol class="pres">
@@ -122,10 +122,10 @@
 <div>L'ORM de framewoRK permet la génération automatique de classes (via le script <span class="script">createClass</span>) en lisant la définition des bases de données configurées pour le projet.</div>
 <br />
 
-<img src="/uploads/classes_orm.png" />
+<img src="/images/classes_orm.png" />
 
 <div class="block">
-	<img src="/uploads/arbo_ORM.png" class="illu" />
+	<img src="/images/arbo_ORM.png" class="illu" />
 	
 	<div class="pres">
 		Prenons l'exemple d'une base de données contenant une table "report".<br />
@@ -173,7 +173,7 @@
 <div>framewoRK permet la création rapide de "pagers" basé sur un modèle, qui se présentent par défaut sous la forme d'un tableau paginé avec des filtres de recherche.</div>
 
 <div class="block">
-	<img src="/uploads/pager.png" class="illu" />
+	<img src="/images/pager.png" class="illu" />
 	<ul class="pres">
 		<li>En haut, un bloc de filtres générés en fonction du modèle et de ses références en base.</li>
 		<li>Au milieu, le nombre de résultats et des liens de pagination.</li>
@@ -359,7 +359,7 @@ GRANT ALL PRIVILEGES ON `trackeet` . * TO 'rk'@'localhost' WITH GRANT OPTION ;
 <div>Une fois les tables créées, il faut demander la génération des classes de l'ORM grâce à <span class="script">./rkTools createClass --all</span></div>
 
 <div class="block">
-	<img src="/uploads/createClass.png" class="illu" />
+	<img src="/images/createClass.png" class="illu" />
 	
 	<div class="pres">On constate que le script a créé tous les fichiers (modèle de base + modèle, table, form, pager et object) pour les table "report" et "category".</div>
 </div>
@@ -370,7 +370,7 @@ GRANT ALL PRIVILEGES ON `trackeet` . * TO 'rk'@'localhost' WITH GRANT OPTION ;
 <h4>B. Création du module</h4>
 
 <div class="block">
-	<img src="/uploads/creation_module_report.png" class="illu" />
+	<img src="/images/creation_module_report.png" class="illu" />
 	
 	<div class="pres">
 		Nous allons ajouter un module "report" à notre application front : il suffit de créer un dossier "report" dans le dossier <span class="path">app/front/modules</span> et d'y placer un fichier "report.class.php".<br />
@@ -438,7 +438,7 @@ Ce paramètre permet de demander au framewoRK de regénérer tous les caches à 
 <div class="todo">MAJ IMG</div>
 
 <div class="block">
-	<img src="/uploads/module_report_1.png" class="illu" />
+	<img src="/images/module_report_1.png" class="illu" />
 	
 	<div class="pres">
 		Nous obtenons l'affichage d'une instance de <span class="php">\user\pager\report</span>.
@@ -472,7 +472,7 @@ Ce paramètre permet de demander au framewoRK de regénérer tous les caches à 
 <div class="clear"></div>
 <br />
 <div class="block">
-	<img src="/uploads/add_report.png" class="illu" />
+	<img src="/images/add_report.png" class="illu" />
 	<div class="pres">
 		<div>En cliquant dessus, une fenêtre modale contenant un formulaire d'ajout de "report" s'affiche.</div>
 		<div>Il s'agit de l'affichage d'une instance de <span class="php">\user\form\report</span>.</div>
