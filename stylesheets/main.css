@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+
+body {
+	max-width: 1300px;
+	margin: 0 auto;
+}
+
+.clear {
+	clear: both;
+}
+
+.block {
+	display: block;
+	max-width: 1300px;
+	margin: 10px;
+}
+
+
+
+.illu {
+/* 	margin: 0 30px 0 0; */
+	padding: 5px;
+	display: inline-block;
+	vertical-align: top;
+	float: left;
+}
+
+.pres {
+	margin: 0;
+	padding: 5px;
+	display: table-cell;
+	vertical-align: top;
+/* 	padding-left: 40px; */
+}
+ul.pres,
+.pres ul {
+	list-style-position: inside;
+}
+
+.path {
+	font-family: Helvetica;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.script {
+	font-family: Helvetica;
+	background-color: rgba(128, 128, 0, 0.3);
+}
+
+.url {
+	font-family: Helvetica;
+	background-color: rgba(0, 64, 128, 0.3);
+}
+
+
+.todo {
+	color: white;
+	background-color: red;
+}
+
+.bash,
+.sql,
+.xml,
+.class,
+.php {
+    background-color: rgba(128, 255, 128, 0.3);
+/*     display: inline-block; */
+    font-family: Georgia;
+    border: 1px solid black;
+/*     margin: 2px; */
+	margin: 0;
+}
+
+.hljs {
+	display: inline-block;
+	vertical-align: bottom;
+	padding: 0;
+}
+
+.hljs .php {
+	background-color: transparent;
+	border: none;
+}
