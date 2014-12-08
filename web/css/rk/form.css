@@ -1,0 +1,101 @@
+form.form caption,
+form.form h3 {
+	font-weight: bold;
+	line-height: 22px;
+	margin: 15px;
+}
+
+
+
+form.form {
+	display: inline-block;
+}
+
+form.form textarea {
+	height: 90px;
+	width: 300px;
+}
+
+
+form.form label,
+table.formNoEdit label {
+	font-style: italic;
+}
+
+
+
+/** Advanced Filters **/
+
+form.filters .buttons,
+form.advancedFilters .buttons {
+	clear: both;
+}
+
+form.advancedFilters .filters {
+	margin-right: 242px;
+}
+
+form.filters .filters input,
+form.filters .filters select,
+form.advancedFilters .filters input,
+form.advancedFilters .filters select {
+	width: 100px;
+	margin: 0;
+	padding: 0;
+}
+
+form.filters .filters .widget,
+form.advancedFilters .filters .widget {
+	margin: 2px;
+	margin-right: 8px;
+	display: inline-block;
+}
+form.filters .filters .label,
+form.advancedFilters .filters .label {
+	width: 120px;
+	display: inline-block;
+}
+form.filters .filters .filter,
+form.advancedFilters .filters .filter {
+	width: 160px;
+	display: inline-block;
+}
+
+
+
+form.advancedFilters .advancedFilter {
+	float: right;
+}
+form.advancedFilters .advancedFilter .button {
+	margin: 0;
+	padding: 0;
+	min-height: 16px;
+	min-width: 16px;
+}
+
+
+
+form.advancedFilters .advancedFilterSummary {
+	float: right;
+	width: 240px;
+	border-left: 1px solid black;
+	padding-left: 3px;
+	overflow-y: auto;
+	max-height: 150px;
+}
+form.advancedFilters .advancedFilterSummary .summaryTitle {
+	text-align: center;
+	text-decoration: underline;
+}
+form.advancedFilters .advancedFilterSummary .criteria {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	float: right;
+	text-align: right;
+}
+
+form.advancedFilters .presets {
+	display: inline-block;
+	margin-left: 50px;
+}
+

@@ -1,0 +1,148 @@
+form .wysihtml5ToolLink {
+	vertical-align: bottom;
+}
+
+a[data-wysihtml5-dialog-action],
+form .wysihtml5ToolButton {
+	
+	min-width: 20px;
+	min-height: 20px;
+	display: inline-block;
+
+	margin: 2px;	
+	padding: 0px 4px;
+	cursor: pointer;
+	
+	vertical-align: top;
+	text-align: center;
+		
+	border: 1px solid black;
+	border-radius: 4px;
+	
+	box-shadow: 1px 1px 1px;
+}
+
+form .wysihtml5ToolButton.wysihtml5-command-active,
+form .wysihtml5ToolButton:hover {
+	box-shadow: 1px 1px 0px;
+}
+
+
+h1.wysiwyg, h2.wysiwyg {
+  line-height: 1;
+  font-family: Rockwell, "Courier New", Courier, Georgia;
+  border-bottom: 1px solid #999;
+  font-weight: bold;
+  margin: 0 5px 25px 0;
+  padding: 0 0 8px;
+}
+
+h1.wysiwyg {
+  font-size: 27px;
+}
+
+h2.wysiwyg {
+  font-size: 18px;
+}
+
+p.wysiwyg, li.wysiwyg {
+  line-height: 1.5;
+}
+
+p.wysiwyg, ul.wysiwyg, ol.wysiwyg {
+  padding-bottom: 25px;
+}
+
+a.wysiwyg {
+  color: inherit;
+}
+
+strong.wysiwyg, b.wysiwyg {
+  font-weight: bold;
+}
+
+i.wysiwyg, em.wysiwyg {
+  font-style: italic;
+}
+
+li.wysiwyg {
+  margin-left: 30px;
+}
+
+ul.wysiwyg li {
+  list-style: disc outside;
+}
+
+ol.wysiwyg li {
+  list-style: decimal outside;
+}
+
+li.wysiwyg img {
+  vertical-align: middle;
+  margin: 2px 5px 5px 0;
+}
+
+.wysihtml5ToolButton[data-wysihtml5-command=bold] {
+	font-weight: bold;
+}
+.wysihtml5ToolButton[data-wysihtml5-command=italic] {
+	font-style: italic;
+}
+
+.wysiwyg-color-1 {
+  color: black;
+}
+.wysiwyg-color-2 {
+  color: blue;
+}
+.wysiwyg-color-3 {
+  color: green;
+}
+.wysiwyg-color-4 {
+  color: red;
+}
+
+.wysiwyg-text-align-center {
+  text-align: center;
+}
+.wysiwyg-text-align-left {
+  text-align: left;
+}
+.wysiwyg-text-align-right {
+  text-align: right;
+}
+
+.wysihtml5ToolButton[data-wysihtml5-command-value=h3],
+.wysihtml5ToolButton[data-wysihtml5-command-value=h4] {
+	font-weight: bold;
+}
+
+div[data-wysihtml5-dialog=createArticleLink],
+div[data-wysihtml5-dialog=createLink] {
+	margin: 5px 0;	
+}
+
+.wysihtml5ToolButton[data-wysihtml5-command=justifyCenter],
+.wysihtml5ToolButton[data-wysihtml5-command=justifyLeft], 
+.wysihtml5ToolButton[data-wysihtml5-command=justifyRight],
+.wysihtml5ToolButton[data-wysihtml5-command=insertOrderedList],
+.wysihtml5ToolButton[data-wysihtml5-command=insertUnorderedList] {
+	padding-left: 22px;
+	min-width: 0px;
+}
+.wysihtml5ToolButton[data-wysihtml5-command=justifyCenter] {
+	background: url("/images/icons/justify_center.png") no-repeat scroll 4px center rgba(0, 0, 0, 0);
+}
+.wysihtml5ToolButton[data-wysihtml5-command=justifyLeft] {
+	background: url("/images/icons/justify_left.png") no-repeat scroll 4px center rgba(0, 0, 0, 0);
+}
+.wysihtml5ToolButton[data-wysihtml5-command=justifyRight] {
+	background: url("/images/icons/justify_right.png") no-repeat scroll 4px center rgba(0, 0, 0, 0);
+}
+.wysihtml5ToolButton[data-wysihtml5-command=insertOrderedList] {
+	background: url("/images/icons/ordered_list.png") no-repeat scroll 4px center rgba(0, 0, 0, 0);
+}
+.wysihtml5ToolButton[data-wysihtml5-command=insertUnorderedList] {
+	background: url("/images/icons/unordered_list.png") no-repeat scroll 4px center rgba(0, 0, 0, 0);
+}
+

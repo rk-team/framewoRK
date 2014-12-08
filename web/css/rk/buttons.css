@@ -1,0 +1,106 @@
+
+/** button **/
+.icon {
+	height: 16px;
+	width: 16px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+	border: 1px solid black;
+	margin: 1px;
+	padding: 1px;
+}
+.icon:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.button {
+	background-position: 2px center;
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+	border: 1px solid black;
+	margin: 5px;
+	text-decoration: none;
+	color: inherit;
+}
+
+
+
+.button.save,
+.button.load,
+.button.cancel,
+.button.reset,
+.button.validate,
+.button.submit,
+.button.delete,
+.button.add,
+.button.close,
+.button.move,
+.button.details,
+.button.search,
+.button.edit {
+	padding: 0 4px 1px 22px;
+}
+
+
+.icon.load,
+.button.load {
+	background-image: url(/images/icons/load.png);
+}
+.icon.save,
+.button.save {
+	background-image: url(/images/icons/save.png);
+}
+.icon.cancel,
+.button.cancel {
+	background-image: url(/images/icons/cancel.png);
+}
+.icon.reset,
+.button.reset {
+	background-image: url(/images/icons/cancel.png);
+}
+.icon.validate,
+.button.validate {
+	background-image: url(/images/icons/validate.png);
+}
+.icon.submit,
+.button.submit {
+	background-image: url(/images/icons/validate.png);
+}
+.icon.delete,
+.button.delete {
+	background-image: url(/images/icons/delete.png);
+}
+.icon.add,
+.button.add {
+	background-image: url(/images/icons/add.png);
+}
+.icon.close,
+.button.close {
+	background-image: url(/images/icons/cancel.png);
+	cursor: 
+}
+.icon.move,
+.button.move {
+	background-image: url(/images/icons/move.png);
+	cursor: move;
+}
+.icon.details,
+.button.details {
+	background-image: url(/images/icons/loop.png);
+}
+.icon.search,
+.button.search {
+	background-image: url(/images/icons/loop.png);
+}
+.icon.edit,
+.button.edit {
+	background-image: url(/images/icons/edit.png);
+}

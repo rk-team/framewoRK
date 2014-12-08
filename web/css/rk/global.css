@@ -1,0 +1,21 @@
+/** page **/
+body {
+	font-family: sans-serif;
+}
+
+
+.rkContent h1 {
+	text-align: center;
+}
+
+
+.clear {
+	clear: both;
+}
+
+.error {
+	color: red;
+}
+.success {
+	color: green;
+}

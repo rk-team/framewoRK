@@ -1,0 +1,83 @@
+pager {
+	display: table;
+	margin: 0 auto;
+}
+
+pager table,
+pager table tr,
+pager table th,
+pager table td {
+	border-collapse: collapse;
+	border: 1px solid black;
+	text-align: center;
+	margin: auto;
+}
+
+pager .pagination {
+	text-align: center;
+}
+
+
+pager .pagination .links {
+	display: inline-block;
+}
+
+pager .pagination .links span,
+pager .pagination .links a {
+	margin: 2px;
+}
+
+pager .pagination .links a {
+	color: black;	
+}
+
+pager .pagination .links .left {
+	float: left;
+}
+pager .pagination .links .right {
+	float: right;
+}
+
+pager .extraButtons {
+	text-align: center;
+}
+
+
+pager td[data-col="actions"] .icon {
+	float: left;
+}
+
+.highlight {
+	background-color: rgba(255, 255, 0, 0.3);
+}
+
+
+
+pager .pagerFilters {
+	border: 1px solid black;
+	box-shadow: 1px 1px 1px;
+	margin: 5px;
+}
+pager .filtersHeader {
+	border-bottom: 1px solid black;
+	padding: 5px;
+}
+pager .filtersContent {
+	padding: 5px;
+}
+
+pager .sortButtons {
+	font-size: 9px;
+}
+pager .sortButtons a {
+	padding: 1px;
+	margin: 1px;
+	text-decoration: none;
+	color: inherit;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+}
+pager .sortButtons .active a {
+	background-color: rgba(246, 246, 246, 0.5);
+}

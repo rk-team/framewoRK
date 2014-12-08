@@ -1,0 +1,157 @@
+
+#webLog {
+	z-index: 1000;
+	
+	position: fixed;
+	width: 400px;
+	border: 1px solid black;
+	background-color: #ffffff;
+}
+
+
+#webLog .header {
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+	height: 23px;
+	border-bottom: 1px solid black;
+}
+
+#webLog .header .move {
+	float: right;
+	cursor: move;
+	margin-right: 19px;
+}
+
+#webLog .header h3 {
+	padding: 3px;
+	margin: 0;
+	border-bottom: 2px solid black;
+	text-align: center;
+}
+
+
+#webLog .content {
+	overflow-x: auto;
+}
+
+#webLog .logsForOnePage {
+	border-bottom: 1px solid black;
+}
+#webLog .pageURL {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+#webLog ul {
+	display: inline-block;
+}
+
+#webLog pre {
+	margin: 0;
+}
+
+
+
+
+#webLog .logType {
+	display: inline-block;
+	margin: 2px 2px 0 2px;
+	padding: 2px;
+	border: 1px solid black;
+	border-radius: 3px 3px 0 0;
+	cursor: pointer;
+}
+#webLog .logsContent {
+	margin: -1px 2px 2px 2px;
+	border: 1px solid black;
+}
+#webLog .logsForType {
+	background-color: #FFFFFF;
+	border: 1px solid #888888;
+	border-top: 0;
+	border-right: 0;
+}
+#webLog .logTimers {
+	font-size: 12px;
+	line-height: 12px;
+}
+#webLog .logType,
+#webLog .oneLog,
+#webLog .logTitle,
+#webLog .logTimers {
+	background-color: #cccccc;
+}
+#webLog .logType[data-type="ALL"] {
+	background-color: #ffffff;
+}
+#webLog .logType[data-type="SQL"],
+#webLog [data-type="SQL"] .oneLog,
+#webLog [data-type="SQL"] .logTitle,
+#webLog [data-type="SQL"] .logTimers {
+	background-color: #CCFFCC;
+}
+#webLog .logType[data-type="OUTPUT"],
+#webLog [data-type="OUTPUT"] .oneLog,
+#webLog [data-type="OUTPUT"] .logTitle,
+#webLog [data-type="OUTPUT"] .logTimers {
+	background-color: #CCFFFF;
+}
+#webLog .logType[data-type="USER"],
+#webLog [data-type="USER"] .oneLog,
+#webLog [data-type="USER"] .logTitle,
+#webLog [data-type="USER"] .logTimers {
+	background-color: #FFFFCC;
+}
+#webLog .logType[data-type="APPLICATION"],
+#webLog [data-type="APPLICATION"] .oneLog,
+#webLog [data-type="APPLICATION"] .logTitle,
+#webLog [data-type="APPLICATION"] .logTimers {
+	background-color: #D7EAAE;
+}
+#webLog .logType[data-type="CACHE"],
+#webLog [data-type="CACHE"] .oneLog,
+#webLog [data-type="CACHE"] .logTitle,
+#webLog [data-type="CACHE"] .logTimers {
+	background-color: #ACDBEE;
+}
+#webLog .logType[data-type="ERROR"],
+#webLog [data-type="ERROR"] .oneLog,
+#webLog [data-type="ERROR"] .logTitle,
+#webLog [data-type="ERROR"] .logTimers {
+	background-color: #ff9090;
+}
+#webLog .logTitle {
+	font-size: 12px;
+	text-decoration: underline;
+}
+#webLog .logData {
+	font-size: 14px;
+	line-height: 14px;
+	white-space: pre;
+}
+#webLog .logName {
+	color: red;
+}
+#webLog .oneLog {
+	padding: 2px;
+}
+#webLog .meter {
+	width: 100px;
+	height: 12px;
+	display: inline-block;
+	border: 1px solid black;
+	margin: 0;
+	padding: 0;
+}
+#webLog .value {
+	margin: 0;
+	padding: 0;
+	height: 12px;
+	background-color: #93C847;
+	display: inline-block;
+	vertical-align: top;
+}
+#webLog .selfDuration .value {
+	background-color: #4390D0;
+}

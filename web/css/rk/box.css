@@ -1,0 +1,166 @@
+/** modale **/
+.rk-bw {
+	min-width: 300px;
+	margin: auto;
+	position: absolute;
+	border: 1px solid black;
+	top: 50%;
+	left: 50%;
+	background-color: #ffffff;
+	box-shadow: 3px 3px 3px;
+}
+
+
+.box-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+
+.rk-bw .head {
+	min-height: 21px;
+}
+
+.rk-bw .head .title {
+	min-height: 21px;
+	font-size: 1.1em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.rk-bw .head.movable {
+	cursor: move;
+}
+
+.rk-bw .head .icon {
+	float: right;
+	margin-top: -20px;
+}
+
+.rk-bw .content {
+	padding: 5px;
+}
+
+
+
+.rk-bw .buttons {
+	text-align: center;
+}
+
+.rk-bw.confirm .message {
+	text-align: center;
+	max-width: 600px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/** loading **/
+.overlayLoading {
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.3);
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.overlayLoading span {
+	overflow: hidden;
+	width: 128px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.overlayLoading .loadingSprite {
+	background-image: url(/images/loading_sprite.png);
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	background-position: 0 0;
+	height: 128px;
+	width: 128px;
+}
+
+.overlayLoading .loadingSprite.step2 {
+	background-position: -128px 0;
+}
+.overlayLoading .loadingSprite.step3 {
+	background-position: -256px 0;
+}
+.overlayLoading .loadingSprite.step4 {
+	background-position: -384px 0;
+}
+.overlayLoading .loadingSprite.step5 {
+	background-position: -512px 0;
+}
+.overlayLoading .loadingSprite.step6 {
+	background-position: -640px 0;
+}
+.overlayLoading .loadingSprite.step7 {
+	background-position: -768px 0;
+}
+.overlayLoading .loadingSprite.step8 {
+	background-position: -896px 0;
+}
+.overlayLoading .loadingSprite.step9 {
+	background-position: -1024px 0;
+}
+.overlayLoading .loadingSprite.step10 {
+	background-position: -1152px 0;
+}
+.overlayLoading .loadingSprite.step11 {
+	background-position: -1280px 0;
+}
+.overlayLoading .loadingSprite.step12 {
+	background-position: -1408px 0;
+}
+
+
+
+
+
+
+
+
+/** folding **/
+.rkFoldingHeader {
+	cursor: pointer;	
+}
+
+/** left/right buttons **/
+.rkFoldingHeader div.right,
+.rkFoldingHeader div.left {
+	background-position:center;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+}
+.rkFoldingHeader.opened div.right,
+.rkFoldingHeader.opened div.left {
+	background-image: url("/images/icons/folding_open.png");
+	background-repeat: no-repeat;
+}
+.rkFoldingHeader div.right {
+	float: right;
+	margin-left: 3px;
+}
+.rkFoldingHeader div.left {
+	float: left;
+	margin-right: 3px;
+}
+.rkFoldingHeader.closed div.right {
+	background-image: url("/images/icons/folding_right_close.png");
+	background-repeat: no-repeat;
+}
+.rkFoldingHeader.closed div.left {
+	background-image: url("/images/icons/folding_left_close.png");
+	background-repeat: no-repeat;
+}
