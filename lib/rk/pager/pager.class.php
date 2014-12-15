@@ -548,8 +548,8 @@ abstract class pager {
 		if ($this->data === null) {
 			
 			$table = $this->getTable();
-			if(!empty($this->tableConfigureMethod)) {
-				$method = $this->tableConfigureMethod;
+			$method = $this->tableConfigureMethod;
+			if(method_exists($table, $method)) {
 				$table->$method();
 			}
 			$this->initFilters($table);
