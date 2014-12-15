@@ -33,7 +33,7 @@ abstract class pager {
 	
 	protected $tableRetrieveMethod = 'getForPager';	// method used on the table to get the data
 	
-	protected $tableConfigureMethod;	// method used on the table to configure filters
+	protected $tableConfigureMethod = 'configureForPager';	// method used on the table to configure filters
 	
 	protected $DOMId;					// id of the pager in the DOM
 	
