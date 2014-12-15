@@ -198,9 +198,10 @@ Comme on peut aussi configurer le template à utiliser pour l'affichage du pager
 <h4>1. Prérequis</h4>
 
 <ul>
-	<li>serveur Apache avec PHP 5.5+</li>
+	<li>serveur Apache avec PHP 5.5+ (et le mode rewrite)</li>
 	<li>serveur mySQL</li>
-	<li>un interpréteur BASH car les scripts n'existent pas en version Windows actuellement</li> 
+	<li>un interpréteur BASH car les scripts n'existent pas en version Windows actuellement</li>
+	<li>Java (>= version 1.4) pour lancer yuicompressor</li>
 </ul>
 
 <h4>2. Configuration d'apache</h4>
@@ -227,14 +228,17 @@ Comme on peut aussi configurer le template à utiliser pour l'affichage du pager
 <div>Activation du site et reload d'apache</div>
 <pre class="bash">
 sudo a2ensite <span style="color: blue">trackeet.rk</span>
-sudo service apache2 reload
+sudo a2enmod rewrite
+sudo service apache2 restart
 </pre>
 
-<div>On s'assure ensuite qu'apache ait le droit sur les sources :</div>
+<div>On s'assure ensuite qu'apache ait le droit sur les sources et que les dossiers de cache et d'uploads existent :</div>
 <pre class="bash">cd <span style="color: blue">/home/www/trackeet</span>
 sudo chmod -R 755 .
-sudo chmod -R 775 ./cache
-sudo chmod -R 775 ./web/uploads
+mkdir cache 
+sudo chmod -R 775 ./cache && chown -R :www-data ./cache
+mkdir web/uploads
+sudo chmod -R 775 ./web/uploads && chown -R :www-data ./web/uploads
 </pre>
 
 <h4>3. Le fichier de configuration</h4>
@@ -358,7 +362,7 @@ INSERT INTO `report` (`id`, `category_id`, `author`, `description`, `name`, `typ
 
 
 CREATE USER 'rk'@'localhost' IDENTIFIED BY 'rk';
-GRANT ALL PRIVILEGES ON `trackeet` . * TO 'rk'@'localhost' WITH GRANT OPTION ;
+GRANT ALL PRIVILEGES ON `rk` . * TO 'rk'@'localhost' WITH GRANT OPTION ;
 </pre>
 
 <div>Une fois les tables créées, il faut demander la génération des classes de l'ORM grâce à <span class="script">./rkTools createClass --all</span></div>
@@ -522,6 +526,14 @@ Ce paramètre permet de demander au framewoRK de regénérer tous les caches à 
 	&lt;source key="report.category_id">
 		&lt;trans lang="fr">Catégorie&lt;/trans>
 		&lt;trans lang="en">Category&lt;/trans>	
+	&lt;/source>
+	&lt;source key="report.date_added">
+		&lt;trans lang="fr">Création&lt;/trans>
+		&lt;trans lang="en">Creation&lt;/trans>	
+	&lt;/source>
+	&lt;source key="report.date_updated">
+		&lt;trans lang="fr">Modif&lt;/trans>
+		&lt;trans lang="en">Update&lt;/trans>	
 	&lt;/source>
 &lt;/sourceList>
 	</pre>
@@ -859,35 +871,41 @@ class logout extends \rk\form {
 
 <pre class="php">
 // app/front/modules/user/user.class.php
-function execute() {
-	if(!\rk\manager::getUser()->isAuth()) {			// l'utilisateur n'est pas authentifié
-		$form = $this->getNewForm('login');			// on récupère un formulaire de classe "login"
-		$form->handleSubmit(\rk\manager::getRequestParams());	// appelle la méthode de gestion du submit de notre form
-	
-		if($form->hasBeenSubmitted() && $form->isValid()) {
-			// si le form est valide, c'est que l'utilisateur a été loggé
-			// le form a afficher devient celui de logout 
+
+namespace user\front\modules\user;
+
+class index extends \rk\app\action {
+
+	function execute() {
+		if(!\rk\manager::getUser()->isAuth()) {			// l'utilisateur n'est pas authentifié
+			$form = $this->getNewForm('login');			// on récupère un formulaire de classe "login"
+			$form->handleSubmit(\rk\manager::getRequestParams());	// appelle la méthode de gestion du submit de notre form
+		
+			if($form->hasBeenSubmitted() && $form->isValid()) {
+				// si le form est valide, c'est que l'utilisateur a été loggé
+				// le form a afficher devient celui de logout 
+				$form = $this->getNewForm('logout');
+			}
+		} else {
+			// même logique, mais inversée
 			$form = $this->getNewForm('logout');
+			$form->handleSubmit(\rk\manager::getRequestParams());
+		
+			if($form->hasBeenSubmitted() && $form->isValid()) {
+				\rk\manager::getUser()->logout();
+				$form = $this->getNewForm('login');
+			}
 		}
-	} else {
-		// même logique, mais inversée
-		$form = $this->getNewForm('logout');
-		$form->handleSubmit(\rk\manager::getRequestParams());
 	
-		if($form->hasBeenSubmitted() && $form->isValid()) {
-			\rk\manager::getUser()->logout();
-			$form = $this->getNewForm('login');
-		}
+		$form->setParam('noAjax', true);			// force le submit sans ajax afin de rafraîchir tout le contenu de la page.
+		$form->setParam('destination', \rk\manager::getRequestURL());	// Comme "action" du form, on utilise l'URL appelée pour la dernière action 
+		
+		$this->tplParams['form'] = $form;
+	
+		$this->setTemplate('index.php');
 	}
-
-	$form->setParam('noAjax', true);			// force le submit sans ajax afin de rafraîchir tout le contenu de la page.
-	$form->setParam('destination', \rk\manager::getRequestURL());	// Comme "action" du form, on utilise l'URL appelée pour la dernière action 
 	
-	$this->tplParams['form'] = $form;
-
-	$this->setTemplate('index.php');
-}
-</pre>
+}</pre>
 
 <div class="block">
 	<pre class="php">
@@ -988,11 +1006,18 @@ protected function init() {
 		$this->getWidget('user_id')->setValue(\rk\manager::getUser()->getId());
 	}
 	$this->orderWidgets(array('user_id', 'name', 'category_id', 'type', 'description'));
+}
+
+public static function configureFilters(\rk\form $form) {
+	parent::configureFilters($form);
+	$form->addWidgets(new \rk\form\widget\text('id', array('label' => 'report.id')));
+	$form->orderWidgets(array('id', 'category_id', 'type', 'name', 'user_id'));
 }</pre>
 	<div class="pres">
 		<span class="php">changeWidgetType</span> permet de changer le type du widget "user_id" (qui est un select en principe) en un input hidden. Il conserve tous ses paramètres.<br />
 		On utilise la méthode "isNew()" qui permet de savoir si l'objet édité dans le form est un nouvel objet ou s'il correspond à un objet existant en base. 
-		Dans le cas où le form porte sur un nouvel objet, on lui attribue comme user_id l'id de l'utilisateur connecté. 
+		Dans le cas où le form porte sur un nouvel objet, on lui attribue comme user_id l'id de l'utilisateur connecté. <br /><br />
+		Pour configureFilters, on va juste remplace "author" par "user_id".
 	</div>
 </div>
 <div class="clear"></div>
@@ -1117,7 +1142,31 @@ ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`report_id`) REFERENCES `report` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 </pre>
 
-<div>Après avoir relancé <span class="script">createClass</span>, on va intégrer notre formulaire de "comment" à notre action "details".</div>
+<div>Après avoir relancé <span class="script">createClass</span>, on va personnaliser et intégrer notre formulaire de "comment" à notre action "details".</div>
+
+<div class="block">
+	<pre class="php illu">
+&lt;?php
+// lib/user/form/connector/comment.class.php
+
+protected function init() {
+	$this->changeWidgetType('report_id', 'hidden');
+	$this->changeWidgetType('user_id', 'hidden');
+	if($this->isNew()) {
+		$this->getWidget('user_id')->setValue(\rk\manager::getUser()->getId());
+	}
+	if(!\rk\manager::getUser()->hasGroup('ADMIN')) {
+		$this->changeWidgetType('type', 'hidden');
+	}
+	$this->orderWidgets(array('id', 'report_id', 'user_id', 'type', 'description'));
+}</pre>
+	<div class="pres">
+		<div>On masque les champs correspondants aux références.</div>
+		<div>On affecte automatiquement le user_id à la création.</div>
+		<div>On ne fait apparaître le champ "type" que pour les utilisateurs appartenant au groupe admin (la valeur par défaut "comment" sera automatiquement utilisée pour les autres utilisateurs)</div>
+		<div>Et on définit l'ordre d'affichage des widgets.</div>
+</div>
+<div class="clear"></div>
 
 <div class="block">
 	<pre class="php illu">
@@ -1145,7 +1194,13 @@ class details extends \rk\app\action {
 		$this->tplParams['comments'] = \rk\db\table::on('comment')->get(array('report_id' => $this->getParam('id')));
 	}	
 }</pre>
+	<div class="pres"></div>
+</div>
+<div class="clear"></div>
+
+<div class="block">
 	<pre class="xml illu">
+// app/front/modules/report/templates/details.php
 &lt;div id="&lt;?php echo $id ?>">
 	&lt;div class="leftCol">
 		&lt;fieldset>
@@ -1195,20 +1250,9 @@ class details extends \rk\app\action {
 <div>On intègre ensuite nos 2 formulaires (celui du report en noEdit, et celui d'ajout de commentaire).</div>
 <div>Enfin, on boucle sur les commentaires récupérés depuis la base de données, et on les affiche, avec un lien d'édition et un lien de suppression pour les utilisateurs du groupe ADMIN.</div>
 
-<div>Une fois les différentes traductions ajoutées, on va personnaliser notre formulaire de "comment", et créer les actions deleteComment et editComment.</div>
+<div>Nous allons maintenant créer les actions deleteComment et editComment.</div>
 
-<pre class="php">
-&lt;?php
-// lib/user/form/connector/comment.class.php
 
-protected function init() {
-	$this->changeWidgetType('report_id', 'hidden');
-	$this->changeWidgetType('user_id', 'hidden');
-	if($this->isNew()) {
-		$this->getWidget('user_id')->setValue(\rk\manager::getUser()->getId());
-	}
-	$this->orderWidgets(array('id', 'report_id', 'user_id', 'type', 'description'));
-}</pre>
 
 <pre class="php">
 // app/front/modules/report/report.class.php
@@ -1242,24 +1286,28 @@ class editComment extends \rk\app\action {
 
 <div class="block">
 	<pre class="php illu">
-// \user\pager\report
-$this->setColumn(array(
-	'name'	=> 'nb_comment',
-	'label'	=> 'report.nb_comment'
-));
-	</pre>
+// lib/user/pager/connector/report.class.php
+protected function init() {
+	parent::init();
+	$this->setColumn(array(
+		'name'	=> 'id', 
+		'label' => 'report.id'
+	));
+	$this->setColumn(array(
+		'name'	=> 'nb_comment',
+		'label'	=> 'report.nb_comment'
+	));
+	$this->orderColumns(array('id', 'category_id', 'type', 'name', 'nb_comment', 'status', 'user_id'));
+}</pre>
 	<div class="pres">On ajoute simplement une colonne nommée "nb_comment" sur notre pager.<br />
-	Par défaut, elle n'affichera rien, car aucune champ nommé "nb_comment" n'est remonté par la table.</div>
+	Par défaut, elle n'affichera rien, car aucune champ nommé "nb_comment" n'est remonté par la table.<br />
+	On rajoute aussi la colonne "status" à la liste de colonnes à afficher.</div>
 </div>
 <div class="clear"></div>
 
 <div class="block">
 	<pre class="php illu">
-// \user\table\report
-&lt;?php
-
-namespace user\table;
-
+// lib/user/table/connector/report.class.php
 class report extends \rk\db\table {
 	
 	public function getForPager($criterias = array(), array $params = array()) {
@@ -1269,7 +1317,8 @@ class report extends \rk\db\table {
 }</pre>
 	<div class="pres">Et on ajoute un "extra select" du même nom sur la table.<br />
 	Pour ce faire, on surcharge la méthode getForPager <span class="todo">FramewoRK : utiliser configureForPager à la place</span>.<br />
-	Un "extra select" est un select SQL qui sera utilisé comme sous requête lors de la récupération des données.</div>
+	Un "extra select" est un select SQL qui sera utilisé comme sous requête lors de la récupération des données.<br /><br />
+	Dans notre cas, le SQL ajouté au SELECT de la requête sera <span class="php">(select count(comment.id) from comment where comment.report_id = report.id) as nb_comment</span></div>
 </div>
 <div class="clear"></div>
 
@@ -1280,10 +1329,7 @@ class report extends \rk\db\table {
 <div>Pour cela, nous allons utiliser la fonction "postSave" disponible sur toutes les classes héritant de <span class="php">\rk\object</span>.</div>
 
 <pre class="php">
-&lt;?php
-
-namespace user\object;
-
+// lib/user/object/connector/comment.class.php
 class comment extends \rk\object {
 	
 	protected function postSave() {
@@ -1309,9 +1355,112 @@ class comment extends \rk\object {
 		
 		$report->save();
 	}
-}
+}</pre>
 
+<div>Nous n'avons plus qu'à rajouter la colonne dans notre pager pour qu'elle apparaisse.</div>
+
+<pre class="php">
+// lib/user/pager/connector/report.class.php
+$this->orderColumns(array('id', 'category_id', 'type', 'status', 'name', 'nb_comment', 'user_id'));
 </pre>
+
+
+
+<h4>4. Filtres avancés</h4>
+
+<div>Nous allons maintenant mettre en place les filtres avancés qui permettent à l'utilisateur de créer simplement des requêtes avec des combinaisons de critères.</div>
+
+<div class="block">
+	<pre class="php illu">
+// lib/user/pager/connector/report.class.php
+protected function init() {
+	$this->params['formFiltersClass'] = '\rk\form\advancedFilters';
+	parent::init();
+	(...)</pre>
+	<div class="pres">On indique au pager qu'il doit utiliser la classe <span class="php">\rk\form\advancedFilters</span> pour gérer les filtres.<br />
+	Par défaut, c'est <span class="php">\rk\form\filters</span> qui est utilisé.</div>
+</div>
+<div class="clear"></div>
+
+<div>Nous allons ensuite modifier la table "report" afin d'y créer des filtres que nous allons utiliser sur le pager.</div>
+
+<div class="block">
+	<pre class="php illu">
+// lib/user/table/connector/report.class.php
+public function configureForPager(array $params = array()) {
+	$this->addReference(new \rk\model\reference('comments', 'id', 'comment', array(
+		'hasMany' 			=> true,
+		'referencedField'	=> 'report_id',
+	)));
+	
+	$this->addFilter('textCombo', 'text', array(
+		'basedOn' 	=> array(
+			$this->getFilter('name'), 
+			$this->getFilter('description'),
+			$this->getFilter('comment.description'),
+		)
+	));
+}</pre>
+	<div class="pres">
+		<div>Pour cela, on va utiliser la méthode "configureForPager", qui permet de paramétrer l'instance de la table utilisée dans le pager.</div>
+		<ul>
+			<li>On rajoute d'abord une référence vers la table "comment", qui nous permet d'obtenir automatiquement un filtre pour chacun des champs de cette table référencée.
+				<ul>
+					<li>"comments" : nom de la référence vers "comment" dans notre instance de table de "report"</li>
+					<li>"id" : champ de la table "report" à utiliser pour construire les requêtes</li>
+					<li>"comment" : nom du modèle de la table référencée</li>
+					<li>"hasMany" : indique que plusieurs "comment" peuvent être récupérés pour un même "report"</li>
+					<li>"referencedField" : champ de la table "comment" à utiliser pour construire la requête</li>
+				</ul>
+				Le LEFT JOIN SQL correspondant ressemblera à : <span class="sql">LEFT JOIN comment AS comment ON report.id = comment.report_id</span>
+			</li>
+			
+			<li>On créé ensuite un filtre "combo", qui permet de n'afficher qu'un seul &lt;input> pour plusieurs filtres SQL.<br />
+			Ici, on va afficher un &lt;input> appelé "text" et qui intègre les filtres "name", "description" et "comment.description"
+			</li>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="clear"></div>
+
+
+
+
+<div>Pour personnaliser nos filtres avancés, nous allons éditer la méthode "configureAdvancedFilters" de notre form de report.</div>
+
+<div class="block">
+	<pre class="php illu">
+// lib/user/form/connector/report.class.php
+public static function configureAdvancedFilters(\rk\form $form) {
+	$form->changeWidgetType('id', 'text');
+	
+	$form->getWidget('text')->setParam('label', 'report.text');
+	$form->getWidget('text')->setParam('operator', array('ilike', 'notilike'));
+	
+	$form->addPreset('report.active_reports', array(
+		'status' => array('equal' => array('NEW', 'IN PROGRESS', 'ACCEPTED'))
+	));
+	
+	if(\rk\manager::getUser()->isAuth()) {
+		$form->addPreset('report.my_reports', array(
+			'user_id' => array('equal' => \rk\manager::getUser()->getId())
+		));
+	}
+	
+	$form->orderWidgets(array('id', 'name', 'text', 'category_id', 'user_id', 'type', 'status'));
+}</pre>
+	<div class="pres">En plus des classiques "changeWidgetType" et "orderWidgets" :
+		<ul>
+			<li>On ajoute un label au filtre "text" (qu'on a créé au niveau de la table), et on précise que les opérateurs de filtres qui doivent être utilisés sont "ilike" et "notilike"</li>
+			<li>On ajoute des "presets" au form. Les presets sont des jeux de filtres préenregistrés que l'utilisateur peut charger en un clic.<br />
+			Ici on créé un preset "active reports" qui contient tous les rapports avec un statut equal à "NEW", "IN PROGRESS" ou "ACCEPTED", et un autre preset qui n'apparait que pour les utilisateurs authentifiés et qui ne fait apparaître que les rapports qu'ils ont créés.</li>
+		</ul>
+		<span class="todo">lien vers filtres</span>
+	</div>
+</div>
+<div class="clear"></div>
+
 
 
 
