@@ -1,3 +1,8 @@
 .settings
 .buildpath
 .project
+lib/user/*
+app/*
+cache/*
+ressources/i18n/user/*
+ressources/templates/user/*

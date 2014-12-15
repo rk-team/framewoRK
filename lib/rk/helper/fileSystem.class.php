@@ -48,6 +48,10 @@ class fileSystem {
 		
 		$dh = opendir($path);
 		
+		if(!$dh) {
+			return array();
+		}
+		
 		$nextDepth = $curDepth + 1;
 		$return = array();
 	
