@@ -47,7 +47,7 @@
 		
 		highlightResults: function(mContainer) {
 			// by default, we want to highlight the content of the pager
-			MContainer = mContainer || $('tbody', this.oContainer);
+			mContainer = mContainer || $('tbody', this.oContainer);
 			var i,
 				j,
 				k,
