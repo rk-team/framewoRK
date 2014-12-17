@@ -46,9 +46,11 @@ class fileSystem {
 	 */
 	protected static function recursScanDir($path, $params, $curDepth = 0) {
 		
-		$dh = opendir($path);
+		if(is_dir($path) && is_readable($path)) {
+			$dh = opendir($path);
+		}
 		
-		if(!$dh) {
+		if(empty($dh)) {
 			return array();
 		}
 		
