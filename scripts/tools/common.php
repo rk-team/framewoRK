@@ -23,11 +23,12 @@ class common {
 			exit(1);
 		}
 		
-		$pCmdline = file_get_contents('/proc/' . $ppid . '/cmdline');
+		// @TODO This check is not mac compliant. We need to find something else
+// 		$pCmdline = file_get_contents('/proc/' . $ppid . '/cmdline');
 				
-		if (strpos($pCmdline, 'rkTools') == false) {
-			echo $error;
-			exit(1);
-		}
+// 		if (strpos($pCmdline, 'rkTools') == false) {
+// 			echo $error;
+// 			exit(1);
+// 		}
 	}
 }

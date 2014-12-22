@@ -114,7 +114,7 @@ abstract class controller {
 		
 		// launch the yui compressor to get a minified version of CSS files
 		$output = array();
-		$cmd = 'cd ' . \rk\manager::getRessourcesDir() . '/binaries && ./yuicompressor-2.4.8.jar "' . $this->TMP_FILE_PATH . '" -o  "' . $this->getCacheFilePath() . '"';
+		$cmd = 'cd ' . \rk\manager::getRessourcesDir() . '/binaries && java -jar yuicompressor-2.4.8.jar "' . $this->TMP_FILE_PATH . '" -o  "' . $this->getCacheFilePath() . '"';
 		exec($cmd, $output, $returnVar);
 		
 		if ($returnVar !== 0) {
