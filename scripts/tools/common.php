@@ -26,8 +26,54 @@ class common {
 	public static function useTpl($tplPath, $vars) {
 		$tpl = file_get_contents($tplPath);
 		foreach($vars as $key => $value) {
+			$tpl = self::parseTplVar($tpl, $key, $value);
+		}
+		
+		return $tpl;
+	}
+	
+	protected static function parseTplVar($tpl, $name, $value, $namePrefix = '') {	
+		if(!empty($namePrefix)) {
+			$name = $namePrefix . $name;
+		}
+		
+		if(is_array($value)) {
+			// if value is an array, we search for corresponding START and END tags
+			$startToken = '@' . $name . 'START@';
+			$endToken = '@' . $name . 'END@';
 			
-			$tpl = str_replace('@' . $key . '@',  $value, $tpl);
+			$start = strpos($tpl, $startToken);
+			$end = strpos($tpl, $endToken) + strlen($endToken);
+			if($start !== false && $end !== false) {
+				$loop = substr($tpl, ($start), ($end - $start));
+				
+				$before = substr($tpl, 0, $start);
+				$after = substr($tpl, $end);
+
+				$all = '';
+				$contentForLoop = $loop;
+				if(is_string(key($value))) {
+					foreach($value as $oneKey => $oneValue) {
+						$contentForLoop = self::parseTplVar($contentForLoop, $oneKey, $oneValue, $name . '.');
+					}
+					$tpl = $contentForLoop;
+				} else {
+					foreach($value as $oneKey => $oneValue) {
+						$all .= self::parseTplVar($loop, $name, $oneValue);
+					}
+					$tpl = $all;
+				}
+			} else {
+				throw new \rk\exception('tpl error');
+			}
+
+			// replace loop by new content
+			$tpl = $before . $tpl . $after;
+			$tpl = str_replace($startToken, '', $tpl);
+			$tpl = str_replace($endToken, '', $tpl);
+			
+		} else {
+			$tpl = str_replace('@' . $name . '@',  $value, $tpl);
 		}
 		
 		return $tpl;

@@ -411,6 +411,45 @@ class createClass {
 		
 					$this->fillExtendFileAndInform($finalFileName, $object);
 				}
+				
+				
+				/////////////////
+				//    I18N     //
+				/////////////////
+				$i18nPath = \rk\manager::getRessourcesDir() . 'i18n/user/';
+				if($oneDB != 'default') {
+					$i18nPath .= $oneDB . '/';
+				}
+				$destination = $i18nPath . $currentObject['class_name'] . '.i18n.xml';
+				if(!file_exists($destination)) {
+					\rk\helper\fileSystem::mkdir($i18nPath);
+					$i18nTplPath = self::$tplPath . 'i18n.tpl';
+					$i18nTplVars = array(
+						'keys'	=> array()
+					);
+					
+					$languages = \rk\manager::getConfigParam('project.languages');
+	
+					foreach ($currentObject['column'] as $oneColumn) {
+						$i18nTmp = array(
+							'key'	=> $currentObject['class_name'] . '.' . $oneColumn['name'],
+							'languages'	=> array()
+						);
+						foreach($languages as $oneLanguage) {
+						 	$i18nTmp['languages'][] = array(
+						 		'key'	=> $oneLanguage,
+						 		'value'	=> $currentObject['class_name'] . '.' . $oneColumn['name']
+						 	);
+						}
+						$i18nTplVars['keys'][] = $i18nTmp;
+					}
+					
+					tools\common::createFileFromTpl($i18nTplPath, $i18nTplVars, $destination);
+					
+					echo "\t" . common::$PRINT_YELLOW . 'fichier i18n créé : ' . $destination . "\n";
+				} else {
+					echo "\t" . common::$PRINT_RED . 'update of i18n files is not yet supported' . common::$PRINT_STD . "\n";
+				}
 			}
 		}
 		
@@ -503,13 +542,13 @@ class createClass {
 		if (file_exists($fileName)) {
 			$fileContent = file_get_contents($fileName);
 			if ($fileContent != $content) {
-				$infoPrefixe .= tools\common::$PRINT_YELLOW . 'fichier base écrasé : ' . "\t";
+				$infoPrefixe .= tools\common::$PRINT_YELLOW . 'base file updated : ' . "\t";
 			} else {
-				$infoPrefixe .= tools\common::$PRINT_GREEN . 'fichier base non modifié : ' . "\t";
+				$infoPrefixe .= tools\common::$PRINT_GREEN . 'base file needed no update : ' . "\t";
 				$modify = false;
 			}
 		} else {
-			$infoPrefixe .= tools\common::$PRINT_YELLOW . 'fichier base créé : ' . "\t";
+			$infoPrefixe .= tools\common::$PRINT_YELLOW . 'base file created : ' . "\t";
 		}
 	
 		if ($modify) {

@@ -91,7 +91,7 @@ class i18n {
 		
 		
 			
-		if($trans === false) {
+		if($trans === false || $trans == $key) {
 			$trace = debug_backtrace();
 			$callers = array();
 			$max = 3;
