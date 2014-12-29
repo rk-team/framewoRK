@@ -4,7 +4,7 @@ namespace rk\scripts\tools;
 
 class common {
 	
-	//variable de coloration texte
+	// shell color variables
 	public static $PRINT_YELLOW = "\033[01;33m";
 	public static $PRINT_CYAN = "\033[01;36m";
 	public static $PRINT_GREEN = "\033[01;32m";
@@ -12,23 +12,12 @@ class common {
 	public static $PRINT_STD = "\033[00m";
 	public static $PRINT_RED = "\033[01;31m";
 
-	//Verifie que l'on se trouve dans le bon repertoire
-	public static function checkLauncher () {
+	
+	public static function checkLauncher ($argv) {
 		
-		$ppid = posix_getppid();
-		$error = "Ce script doit être lancé via rkTools !\n";
-		
-		if (empty($ppid)) {
-			echo $error;
+		if (php_sapi_name() != "cli") {
+			echo 'This script must be launched in console mode !' . "\n";
 			exit(1);
 		}
-		
-		// @TODO This check is not mac compliant. We need to find something else
-// 		$pCmdline = file_get_contents('/proc/' . $ppid . '/cmdline');
-				
-// 		if (strpos($pCmdline, 'rkTools') == false) {
-// 			echo $error;
-// 			exit(1);
-// 		}
 	}
 }

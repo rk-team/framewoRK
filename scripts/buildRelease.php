@@ -53,18 +53,18 @@ exec('rm -rf ' . $TMPDIR  . '/web/uploads/*');
 
 echo tools\common::$PRINT_CYAN . "\n" .'Creating default application ' . "\n" . tools\common::$PRINT_STD;
 exec('mkdir ' . $TMPDIR  . '/app/front');
-file_put_contents($TMPDIR  . '/app/front/application.class.php', file_get_contents('scripts/tools/buildRelease/templates/front.application.tpl'));
+\rk\helper\fileSystem::file_put_contents($TMPDIR  . '/app/front/application.class.php', file_get_contents('scripts/tools/buildRelease/templates/front.application.tpl'));
 exec('mkdir ' . $TMPDIR  . '/app/front/modules');
 exec('mkdir ' . $TMPDIR  . '/app/front/modules/home');
-file_put_contents($TMPDIR  . '/app/front/modules/home/home.class.php', file_get_contents('scripts/tools/buildRelease/templates/front.home.module.tpl'));
+\rk\helper\fileSystem::file_put_contents($TMPDIR  . '/app/front/modules/home/home.class.php', file_get_contents('scripts/tools/buildRelease/templates/front.home.module.tpl'));
 exec('mkdir ' . $TMPDIR  . '/app/front/modules/home/templates');
-file_put_contents($TMPDIR  . '/app/front/modules/home/templates/index.php', file_get_contents('scripts/tools/buildRelease/templates/front.home.index.tpl'));
+\rk\helper\fileSystem::file_put_contents($TMPDIR  . '/app/front/modules/home/templates/index.php', file_get_contents('scripts/tools/buildRelease/templates/front.home.index.tpl'));
 
 echo tools\common::$PRINT_CYAN . "\n" .'Setting default config ' . "\n" . tools\common::$PRINT_STD;
-file_put_contents($TMPDIR  . '/app/config.ini', file_get_contents('scripts/tools/buildRelease/templates/config.ini.tpl'));
+\rk\helper\fileSystem::file_put_contents($TMPDIR  . '/app/config.ini', file_get_contents('scripts/tools/buildRelease/templates/config.ini.tpl'));
 
 echo tools\common::$PRINT_CYAN . "\n" .'Setting default user ' . "\n" . tools\common::$PRINT_STD;
-file_put_contents($TMPDIR  . '/lib/user/user.class.php', file_get_contents('scripts/tools/buildRelease/templates/user.class.php.tpl'));
+\rk\helper\fileSystem::file_put_contents($TMPDIR  . '/lib/user/user.class.php', file_get_contents('scripts/tools/buildRelease/templates/user.class.php.tpl'));
 
 echo tools\common::$PRINT_CYAN . "\n" .'Creating .zip' . "\n" . tools\common::$PRINT_STD;
 exec('cd ' . $TMPDIR . ' && zip -r ' . $destinationFolder . '/release.zip .');

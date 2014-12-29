@@ -6,8 +6,19 @@ class fileSystem {
 	
 	public static function mkdir($path) {
 		if(!file_exists($path)) {
-			mkdir($path, 0755, true);
+			$old = umask(0);
+			mkdir($path, 0775, true);
+			umask($old);
 		}
+	}
+	
+	public static function file_put_contents($path, $data, $append = false) {
+		if($append) {
+			file_put_contents($path, $data, FILE_APPEND);
+		} else {
+			file_put_contents($path, $data);
+		}
+		chmod($path, 0775);
 	}
 		
 	/**

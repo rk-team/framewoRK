@@ -83,6 +83,7 @@ class autoloader {
 		}
 		
 		file_put_contents(self::getCacheFileName(), serialize($toCache));
+		chmod(self::getCacheFileName(), 0775);
 	}
 	
 	/**

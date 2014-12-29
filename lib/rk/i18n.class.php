@@ -302,7 +302,7 @@ class i18n {
 					$catalogTranslations = array_merge($previousValues, $catalogTranslations);
 				}
 				
-				file_put_contents($destination, serialize($catalogTranslations));
+				\rk\helper\fileSystem::file_put_contents($destination, serialize($catalogTranslations));
 			}
 		}
 	}

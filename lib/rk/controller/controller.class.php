@@ -109,12 +109,12 @@ abstract class controller {
 			unlink($this->TMP_FILE_PATH);
 		}
 		foreach($this->filesToInclude as $oneFile) {
-			file_put_contents($this->TMP_FILE_PATH, '/** ' . $oneFile . '**/ ' . file_get_contents($oneFile), FILE_APPEND);
+			\rk\helper\fileSystem::file_put_contents($this->TMP_FILE_PATH, '/** ' . $oneFile . '**/ ' . file_get_contents($oneFile), FILE_APPEND);
 		}
 		
 		// launch the yui compressor to get a minified version of CSS files
 		$output = array();
-		$cmd = 'cd ' . \rk\manager::getRessourcesDir() . '/binaries && java -jar yuicompressor-2.4.8.jar "' . $this->TMP_FILE_PATH . '" -o  "' . $this->getCacheFilePath() . '"';
+		$cmd = 'cd ' . \rk\manager::getRessourcesDir() . '/binaries && java -jar yuicompressor-2.4.8.jar "' . $this->TMP_FILE_PATH . '" -o  "' . $this->getCacheFilePath() . '" && chmod 775 "' . $this->getCacheFilePath() . '"';
 		exec($cmd, $output, $returnVar);
 		
 		if ($returnVar !== 0) {

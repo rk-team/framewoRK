@@ -119,7 +119,7 @@ class JS extends \rk\controller {
 		
 		// add transalations to cache file
 		$data = self::getFormattedTranslations();
-		file_put_contents(self::getCacheFilePath(), "\n" . $data, FILE_APPEND);
+		\rk\helper\fileSystem::file_put_contents(self::getCacheFilePath(), "\n" . $data, FILE_APPEND);
 		
 		return file_get_contents($this->getCacheFilePath());
 	}

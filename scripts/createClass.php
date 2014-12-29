@@ -517,7 +517,7 @@ class createClass {
 			if(!is_dir($dir)) {
 				\rk\helper\fileSystem::mkdir($dir);
 			}
-			file_put_contents($fileName, $content);
+			\rk\helper\fileSystem::file_put_contents($fileName, $content);
 		}
 	
 		echo $infoPrefixe . $fileName . tools\common::$PRINT_STD . "\n";
@@ -532,7 +532,7 @@ class createClass {
 		if(!is_dir($dir)) {
 			\rk\helper\fileSystem::mkdir($dir);
 		}
-		file_put_contents($fileName, $content);
+		\rk\helper\fileSystem::file_put_contents($fileName, $content);
 		
 		echo "\t" . common::$PRINT_YELLOW . 'fichier étendue créé : ' . $fileName . "\n";
 	}
