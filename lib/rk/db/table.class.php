@@ -10,6 +10,8 @@ abstract class table {
 		$filters = array(),
 		$references = array();
 	
+	protected $limitForSelect = 100;
+	
 	protected $modelName = null;
 	
 	public function __construct() {
@@ -405,6 +407,12 @@ abstract class table {
 		if(empty($params['orderSort'])) {
 			$params['orderSort'] = 'asc';
 		}
+		
+		$count = $this->getCount($criterias, $params);
+		if($count > $this->limitForSelect) {
+			$params['limit'] = $this->limitForSelect;
+		}
+		
 		$res = $this->_get($criterias, $params);
 	
 		$return = array();
