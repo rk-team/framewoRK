@@ -11,7 +11,8 @@ class autoloader {
 		$includeStringSuffix = array('.class.php'),
 		$cacheRepPath = 'cache/',
 		$cacheFileName = 'autoload.cache',
-		$classesPath = array();
+		$classesPath = array(),
+		$alreadyRebuilt = false;
 	
 	/**
 	 * @brief Lancement de l'autoloader
@@ -30,10 +31,13 @@ class autoloader {
 		if(!empty(self::$classesPath[$name])) {
 			include (self::$classesPath[$name]);
 		} else {
-			// try to rebuild cache if class not found
-			self::rebuildCache();
-			if(!empty(self::$classesPath[$name])) {
-				include (self::$classesPath[$name]);
+			if(class_exists('\rk\manager', false) && \rk\manager::getInstance()->isDevMode() && !self::$alreadyRebuilt) {
+				// try to rebuild cache if class not found AND we are in dev mode AND cache was not rebuilt already
+				self::$alreadyRebuilt = true;
+				self::rebuildCache();
+				if(!empty(self::$classesPath[$name])) {
+					include (self::$classesPath[$name]);
+				}
 			}
 		}
 	}
