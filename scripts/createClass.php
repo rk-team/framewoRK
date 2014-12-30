@@ -446,9 +446,77 @@ class createClass {
 					
 					tools\common::createFileFromTpl($i18nTplPath, $i18nTplVars, $destination);
 					
-					echo "\t" . common::$PRINT_YELLOW . 'fichier i18n créé : ' . $destination . "\n";
+					echo "\t" . common::$PRINT_YELLOW . 'i18n file created : ' . $destination . "\n";
 				} else {
-					echo "\t" . common::$PRINT_RED . 'update of i18n files is not yet supported' . common::$PRINT_STD . "\n";
+					
+					$doc = new \DOMDocument();
+					$doc->preserveWhiteSpace = false;
+					$doc->formatOutput = true;
+					$doc->load($destination);
+					
+					$sources = $doc->getElementsByTagName('source');
+					
+					// first, we get all existing keys in i18n file
+					$keys = array();
+					foreach($sources as $oneSource) {
+						$langs = $oneSource->getElementsByTagName('trans');
+						
+						$keys[$oneSource->getAttribute('key')] = array();
+						
+						foreach($langs as $oneLang) {
+							$keys[$oneSource->getAttribute('key')][$oneLang->getAttribute('lang')] = $oneLang->nodeValue;
+						}
+						
+					}
+					
+					
+					$languages = \rk\manager::getConfigParam('project.languages');
+					
+					$xpath = new \DOMXPath($doc);
+					$sourceList = $xpath->query('//sourceList');
+					$sourceList = $sourceList->item(0);
+					
+					// then we compare them to attributes from DB and languages from config
+					foreach ($currentObject['column'] as $oneColumn) {
+						$keyName = $currentObject['class_name'] . '.' . $oneColumn['name'];
+						if(empty($keys[$keyName])) {
+							// key does not exist at all
+							
+							$xmlSource = $doc->createElement('source');
+							$xmlSource->setAttribute('source', $keyName);
+							
+							foreach($languages as $oneLanguage) {
+								$xmlTrans = $doc->createElement('trans');
+								$xmlTrans->setAttribute('lang', $oneLanguage);
+								$xmlTrans->nodeValue = $keyName;
+								
+								$xmlSource->appendChild($xmlTrans);
+							}
+							
+							$sourceList->appendChild($xmlSource);							
+						} else {
+							foreach($languages as $oneLanguage) {
+								if(empty($keys[$keyName][$oneLanguage])) {
+									// a language is missing
+									
+									$query = '//source[@key="' . $keyName . '"]';
+	
+									$xmlSource = $xpath->query($query);
+									$xmlSource = $xmlSource->item(0);
+									
+									$xmlTrans = $doc->createElement('trans');
+									$xmlTrans->setAttribute('lang', $oneLanguage);
+									$xmlTrans->nodeValue = $keyName;
+									
+									$xmlSource->appendChild($xmlTrans);
+								}
+							}
+						}
+					}
+
+					$fullXML = $doc->saveXML();
+					\rk\helper\fileSystem::file_put_contents($destination, $fullXML);
+					echo "\t" . common::$PRINT_YELLOW . 'i18n file updated : ' . $destination . common::$PRINT_STD . "\n";
 				}
 			}
 		}
