@@ -133,19 +133,10 @@ class requestHandler {
 		$this->applicationName = $application;
 		$this->moduleName = $module;
 		$this->actionName = $action;
-		
-// 		try {
-			$actionClass = '\user\\' . $application . '\modules\\' . $module . '\\' . $action;
-			
-// 		} catch(\rk\exception $e) {
-			
-// 		}
-		
+
 		$actionClass = '\user\\' . $application . '\modules\\' . $module . '\\' . $action;
 		if (!class_exists($actionClass, true)) {
 			throw new \rk\exception\actionNotFound($actionClass);
-// 			var_dump($actionClass);
-// 			$this->die404();
 		}
 	}
 
