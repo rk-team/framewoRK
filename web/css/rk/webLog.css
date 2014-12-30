@@ -155,3 +155,10 @@
 #webLog .selfDuration .value {
 	background-color: #4390D0;
 }
+
+#webLog .missingI18n .label {
+	font-weight: bold;
+}
+#webLog .missingI18n:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.1);
+}

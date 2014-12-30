@@ -28,11 +28,17 @@
 		},
 		
 		headerClickedHandler: function(iIndex, e) {
+			this.activateTab(iIndex);
+		},
+		
+		activateTab: function(iIndex) {
 			var i;
 			for(i = 0; i < this.oParams.aContents.length; i++) {
-				$(this.oParams.aContents[i]).css('display', 'none');				
+				$(this.oParams.aContents[i]).css('display', 'none');
+				$(this.oParams.aHeaders[i]).removeClass('activeTab');
 			}
 			$(this.oParams.aContents[iIndex]).css('display', '');
+			$(this.oParams.aHeaders[iIndex]).addClass('activeTab');
 		}
 	});	
 	

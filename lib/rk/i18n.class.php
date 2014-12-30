@@ -102,7 +102,7 @@ class i18n {
 				$callers[] = str_replace(\rk\manager::getRootDir(), '', $trace[$i]['file']) . ' (line ' . $trace[$i]['line'] . ')';
 			}
 
-			\rk\webLogger::add(array('MISSING I18N' => $key, 'language' => $language, 'callers' => $callers), 'ERROR');
+			\rk\webLogger::add(array('key' => $key, 'language' => $language, 'callers' => $callers), 'I18N');
 		}
 		
 		// no translation found in given language. We try to find one in the project default language
