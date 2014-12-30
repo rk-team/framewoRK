@@ -7,7 +7,7 @@ class action extends \rk\pager\column {
 	
 	protected $name = 'actions';
 	
-	protected $label = 'pager.column.actions';
+	protected $label = 'pager.column_actions';
 		
 	protected $buttons = array();
 	
