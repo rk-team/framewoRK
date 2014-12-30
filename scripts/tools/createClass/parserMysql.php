@@ -53,6 +53,10 @@ class parserMysql extends parser {
 			$currentObject['column'][$key]['type'] = $oneTableColumns['DATA_TYPE'];
 		
 			switch ($oneTableColumns['DATA_TYPE']) {
+				case 'decimal':
+					$currentObject['column'][$key]['type'] = 'float';
+					break;
+				case 'bigint':
 				case 'int':
 					$currentObject['column'][$key]['type'] = 'integer';
 					break;
@@ -60,6 +64,8 @@ class parserMysql extends parser {
 				case 'tinyint':
 					$currentObject['column'][$key]['type'] = 'boolean';
 					break;
+				case 'longblob':
+				case 'mediumblob':
 				case 'blob':
 				case 'text':
 					$currentObject['column'][$key]['type'] = 'richtext';
@@ -84,7 +90,7 @@ class parserMysql extends parser {
 					$currentObject['column'][$key]['enum_values'] = $enumValues;
 					break;
 				default :
-					echo 'unlnown data type : "' . $oneTableColumns['DATA_TYPE'] . "\"\n";
+					echo 'unknown data type : "' . $oneTableColumns['DATA_TYPE'] . "\"\n";
 					exit(1);
 			}
 		

@@ -7,12 +7,17 @@ function shutdown_handler() {
 		$lastError['type'] == E_COMPILE_ERROR || $lastError['type'] == E_USER_ERROR || $lastError['type'] == E_RECOVERABLE_ERROR
 	)) {
 		
+/*		if($lastError['type'] == E_ERROR && class_exists('\rk\manager') && \rk\manager::isDevMode()) {
+			header('HTTP/1.1 500 Internal Server Error');
+			var_dump($lastError);
+			die('An exception has occured');
+		}*/
+		
 		log_error($lastError['type'], $lastError['message'], $lastError['file'], $lastError['line']);
 		
 		$script = '<script type="text/rkscript">
 		' . \rk\webLogger::getLogsJSOutput() . '
 		</script>';
-		
 		header('HTTP/1.1 500 Internal Server Error');
 		die($script.'An exception has occured');
 	}

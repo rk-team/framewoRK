@@ -29,7 +29,6 @@ class i18n {
 		$CACHE_PATH = 'cache/i18n/',
 		$translations = array();
 	
-	
 	/**
 	 * returns the translation for given key
 	 * @param string $key
@@ -82,8 +81,8 @@ class i18n {
 			$count = 1;
 		}
 
-		
-		$pos = strpos($key, '.');
+
+		$pos = strrpos($key, '.');	// i18n keys are formatted like : <database>.<table>.<field>, or <table>.<field>
 		$catalog = substr($key, 0, $pos);
 		
 		// try to find a translation with given params
@@ -127,6 +126,7 @@ class i18n {
 			$key = htmlentities($key, ENT_QUOTES);
 		}
 		
+	
 		// no translation was found : we return the key
 		return $key;
 	}
@@ -139,7 +139,6 @@ class i18n {
 	 * @param integer $count
 	 */
 	private static function getTranslation($language, $catalog, $key, $count) {
-		
 		self::loadCatalogFromCache($language, $catalog);
 		
 		$trans = false;
@@ -166,7 +165,6 @@ class i18n {
 	private static function loadCatalogFromCache($languageName, $catalogName) {
 		if(empty(self::$translations[$catalogName])) {
 			$path = self::getCatalogPath($languageName, $catalogName);
-
 			if(file_exists($path)) {
 				self::$translations[$catalogName][$languageName] = unserialize(file_get_contents($path));
 			}
@@ -174,6 +172,9 @@ class i18n {
 	} 
 	
 	public static function getCatalog($catalogName) {
+		$nbDot = substr_count($catalogName, '.') - 1;
+		$catalogPath = preg_replace('/\./', '/\//', $catalogName, $nbDot);
+		
 		$return = array();
 		
 		$path = \rk\manager::getRootDir() . self::$CACHE_PATH;
@@ -182,7 +183,8 @@ class i18n {
 		$files = \rk\helper\fileSystem::scandir($path);
 		foreach($files as $oneFile) {
 			
-			$fullPath = $path . '/' . $oneFile . '/' . $catalogName . '.cache';
+			
+			$fullPath = $path . '/' . $oneFile . '/' . $catalogPath . '.cache';
 			if(file_exists($fullPath)) {
 				$return[$oneFile] = unserialize(file_get_contents($fullPath));
 			}
@@ -226,8 +228,7 @@ class i18n {
 	}
 	
 	
-	public static function _makeCache($path, $extend = false) {
-		
+	public static function _makeCache($path, $extend = false, $prefix = '') {
 		$translationSet = array();
 		
 		$basePath = \rk\manager::getRootDir() . $path;
@@ -236,54 +237,55 @@ class i18n {
 		foreach($files as $oneFile) {
 			$fullPath = $basePath . '/' . $oneFile;
 			if (is_dir($fullPath)) {
-				continue;
-			}
+				self::_makeCache($path . '/' . $oneFile, $extend, $oneFile . '.');
+			} else {
+				$catalog = str_replace('.i18n.xml', '', $oneFile);
 				
-			$catalog = str_replace('.i18n.xml', '', $oneFile);
-			
-			$doc = new \DOMDocument();
-			$load = $doc->loadXML(file_get_contents($fullPath));
-			if(!$load) {
-				throw new \rk\exception('cant parse translations catalog', array('catalog' => $catalog));
-			}
-			
-			$sources = $doc->getElementsByTagName('source');
-			foreach($sources as $oneSource) {
-				$key = $oneSource->getAttribute('key');
-				$trans = $oneSource->getElementsByTagName('trans');
-				foreach($trans as $oneTrans) {
-					$singularNode = $oneTrans->getElementsByTagName('singular');
-					$pluralNode = $oneTrans->getElementsByTagName('plural');
-					if (($singularNode->length > 0) && ($pluralNode->length > 0)) {
-			
-						$out = new \DOMDocument();
-						foreach($singularNode->item(0)->childNodes as $oneChild) {
-							$out->appendChild($out->importNode($oneChild,true));
-						}
-						$value = $out->saveHTML();
-						$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key]['singular'] = trim($value);
-			
-						$out = new DOMDocument();
-						foreach($pluralNode->item(0)->childNodes as $oneChild) {
-							$out->appendChild($out->importNode($oneChild,true));
-						}
-						$value = $out->saveHTML();
-						$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key]['plural'] = trim(html_entity_decode($value, ENT_QUOTES));
-					} else {
-						if($oneTrans->hasChildNodes()) {
+				$doc = new \DOMDocument();
+				$load = $doc->loadXML(file_get_contents($fullPath));
+				if(!$load) {
+					throw new \rk\exception('cant parse translations catalog', array('catalog' => $catalog));
+				}
+				
+				$sources = $doc->getElementsByTagName('source');
+				foreach($sources as $oneSource) {
+					$key = $prefix . $oneSource->getAttribute('key');
+					$trans = $oneSource->getElementsByTagName('trans');
+					foreach($trans as $oneTrans) {
+						$singularNode = $oneTrans->getElementsByTagName('singular');
+						$pluralNode = $oneTrans->getElementsByTagName('plural');
+						if (($singularNode->length > 0) && ($pluralNode->length > 0)) {
+				
 							$out = new \DOMDocument();
-							foreach($oneTrans->childNodes as $oneChild) {
+							foreach($singularNode->item(0)->childNodes as $oneChild) {
 								$out->appendChild($out->importNode($oneChild,true));
 							}
 							$value = $out->saveHTML();
+							$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key]['singular'] = trim($value);
+				
+							$out = new DOMDocument();
+							foreach($pluralNode->item(0)->childNodes as $oneChild) {
+								$out->appendChild($out->importNode($oneChild,true));
+							}
+							$value = $out->saveHTML();
+							$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key]['plural'] = trim(html_entity_decode($value, ENT_QUOTES));
 						} else {
-							// no translation found in XML
-							$value = '';
+							if($oneTrans->hasChildNodes()) {
+								$out = new \DOMDocument();
+								foreach($oneTrans->childNodes as $oneChild) {
+									$out->appendChild($out->importNode($oneChild,true));
+								}
+								$value = $out->saveHTML();
+							} else {
+								// no translation found in XML
+								$value = '';
+							}
+							$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key] = trim(html_entity_decode($value, ENT_QUOTES));
 						}
-						$translationSet[$oneTrans->getAttribute('lang')][$catalog][$key] = trim(html_entity_decode($value, ENT_QUOTES));
 					}
 				}
 			}
+				
 		}
 		
 		// we create one cache file for each language and catalog		
@@ -294,7 +296,7 @@ class i18n {
 				\rk\helper\fileSystem::mkdir($destination);
 				
 				// write cache file
-				$destination = self::getCatalogPath($languageName, $catalogName);
+				$destination = self::getCatalogPath($languageName, $prefix . $catalogName);
 				
 				// extend previous value if needed
 				if ($extend && file_exists($destination)) {
