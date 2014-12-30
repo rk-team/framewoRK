@@ -1,8 +1,17 @@
 <!doctype html>
 <html lang="<?php echo $language ?>">
 <head>
-  <meta charset="utf-8">
-  <title><?php echo $title ?></title>
+	<title><?php echo $title ?></title>
+  <?php
+if(!empty($metas)):
+	foreach($metas as $type => $metasForType):
+  		foreach($metasForType as $name => $value):
+			if(!empty($value)):
+				echo "\t" . '<meta ' . $type . '="' . $name . '" content="' . $value . '" />' . "\n";
+			endif;
+		endforeach;
+	endforeach;
+endif; ?>
   
 <?php echo $jsContent ?>
 <?php echo $cssContent ?>

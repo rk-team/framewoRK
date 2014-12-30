@@ -12,6 +12,19 @@ abstract class app {
 	
 	protected $tplParams = array();
 	
+	protected $htmlTitle = '';
+	
+	protected $htmlMetas = array(
+		'http-equiv'	=> array(
+			'Content-Type'	=> 'text/html; charset=utf-8',
+		),
+		'name'			=> array(
+			'description'	=> '',
+			'keywords'		=> '',
+			'generator'		=> 'framewoRK alpha1'
+		),
+	);
+	
 	/**
 	 * returns application name
 	 * @return string
@@ -20,6 +33,13 @@ abstract class app {
 		$className = \rk\helper::getClassFromNamespace($this, 2);
 		
 		return $className;
+	}
+	
+	public function setHtmlTitle($title) {
+		$this->htmlTitle = $title;
+	}
+	public function setHtmlMeta($type, $name, $value) {
+		$this->htmlMetas[$type][$name] = $value;
 	}
 	
 	public function getUserClassName() {
@@ -73,6 +93,11 @@ abstract class app {
 		);
 		
 		$output = $this->getActionOutput($actionObject);
+		
+		// if an HTML title is set for action, we use it instead of the application one
+		if(!empty($actionObject->getHtmlTitle())) {
+			$this->htmlTitle = $actionObject->getHtmlTitle();
+		}
 							
 		if ($actionObject->isJSONOutput()) {
 			return $output;
@@ -107,9 +132,14 @@ abstract class app {
 		$jsController = new \rk\controller\JS(\rk\manager::isDevMode());
 		$cssController = new \rk\controller\CSS(\rk\manager::isDevMode());
 		
+		if(empty($this->htmlTitle)) {
+			$this->htmlTitle = $this->getAppName() . ' - ' . \rk\manager::getInstance()->getRequestHandler()->getModuleName();
+		}
+		
 		$tplParams = array(
 			'language' 	=> \rk\manager::getUser()->getLanguage(),
-			'title' 	=> $this->getAppName(),
+			'title' 	=> $this->htmlTitle,
+			'metas'		=> $this->htmlMetas,
 			'content' 	=> $output,
 			'jsContent'	=> $jsController->getContent(),
 			'cssContent'=> $cssController->getContent(),

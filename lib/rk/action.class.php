@@ -18,6 +18,7 @@ abstract class action {
 		$defaultTemplateFileName,
 		$templateFileName,
 		$templateFullPath,
+		$htmlTitle,
 		$outputWith;
 	
 	abstract function execute();
@@ -41,6 +42,10 @@ abstract class action {
 	public function setTemplate($fileName) {
 		$this->templateFileName = $fileName;
 		$this->outputWith = null;
+	}
+	
+	public function getHtmlTitle() {
+		return $this->htmlTitle;
 	}
 	
 	public function init(array $params) {
