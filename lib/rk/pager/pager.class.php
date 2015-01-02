@@ -460,7 +460,7 @@ abstract class pager {
 	
 	public function getOutput() {
 		$this->retrieveData();
-		
+// 		var_dump($this);
 		$paginationLinks = array();
 		if ($this->displayPagination) {
 			$paginationLinks = $this->computePaginationLinks();

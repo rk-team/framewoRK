@@ -17,6 +17,8 @@ class reference {
 		$referencedField = '',		// name of the field of the foreign table to use to build the left join condition (ex: "id")
 		$referencedTableAlias = '',	// alias of the foreign table in the SQL query  (ex: "author")
 		
+		$parentReferenceName = null,
+		
 		$condition = '',			// SQL condition to use in the left join
 		$extraCondition = null,		// \rk\db\criteriaSet to be added to the left join's base condition
 		
@@ -63,6 +65,10 @@ class reference {
 			$this->referencingTableAlias = $params['referencingTableAlias'];
 		}
 		
+		if (!empty($params['parentReferenceName'])) {
+			$this->parentReferenceName = $params['parentReferenceName'];
+		}
+		
 		if (!empty($params['hasMany'])) {
 			$this->hasMany = $params['hasMany'];
 		}
@@ -91,6 +97,10 @@ class reference {
 	
 	public function getReferencedModelName() {
 		return $this->referencedModelName;
+	}
+	
+	public function getParentReferenceName() {
+		return $this->parentReferenceName;
 	}
 	
 	public function getCondition() {
@@ -192,6 +202,10 @@ class reference {
 			return $this->referencingTableAlias;
 		}
 		return false;
+	}
+	
+	public function setReferencingTableAlias($alias) {
+		$this->referencingTableAlias = $alias;
 	}
 	
 	public function hasMany() {

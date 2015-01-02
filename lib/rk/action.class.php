@@ -225,7 +225,7 @@ abstract class action {
 				
 		$crud = new \rk\crud($modelClass, $requestParams, $params);
 		$this->outputWith($crud);
-		
+
 		return $crud;
 	}
 

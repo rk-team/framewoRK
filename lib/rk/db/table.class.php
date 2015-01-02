@@ -93,7 +93,7 @@ abstract class table {
 		if(!$toArray) {
 			$res = $this->formatObjects($res);
 		}
-				
+		
 		return $res;
 	}
 	
@@ -107,6 +107,15 @@ abstract class table {
 		return false;
 	}
 	public function addReference(\rk\model\reference $reference) {
+		
+		if(!empty($reference->getParentReferenceName())) {
+			// search parent reference
+			$parentRef = $this->getReference($reference->getParentReferenceName());
+			if(empty($parentRef)) {
+				throw new \rk\exception('parent reference not found');
+			}
+			$reference->setReferencingTableAlias($parentRef->getReferencedTableAlias());
+		}
 		
 		$this->references[$reference->getName()] = $reference;
 		
@@ -206,36 +215,47 @@ abstract class table {
 			}
 			// then we use $refData to add references objects to our return
 			foreach($this->references as $oneReference) {
-				
 				$hydrateBy = $oneReference->getHydrateBy();
 				
 				$aliasName = '';
 				if ($oneReference->getReferencedTable() != $this->name) {
 					$aliasName = $oneReference->getReferencedTableAlias();
 				}
-				
+
 				if(!empty($refData[$aliasName])) {
 					
-					if(!empty($oneReference->getReferencingTableAlias())) {
-						$parents = array();
-						$parentRef = $oneReference;
-						do {
-							if(empty($parentRef->getReferencingTableAlias())) {
-								// we are on the origin table
-								$parents[] = $parents->getReferencedTableAlias();
-							} else {
-								// referencedTable has a referencing table alias
-								$parents[] = $parents->getReferencingTableAlias();
+					if(!empty($oneReference->getReferencingTableAlias()) && $oneReference->getReferencingTableAlias() != $this->name) {
+						// reference does not point to current table
+
+						if(!empty($oneReference->getParentReferenceName())) {
+							$target = &$return[$PKForRes];
+
+							// we have to loop on parent reference until we get one that points to current table
+							$parentReferences = array();							
+							$parentRef = false;
+							do {
+								if(empty($parentRef)) {
+									$parentRef = $this->getReference($oneReference->getParentReferenceName());
+								} else {
+									$parentRef = $this->getReference($parentRef->getParentReferenceName());
+								}
+								$parentReferences[] = $parentRef;
+							} while(!empty($parentRef->getReferencingTableAlias()) && $parentRef->getReferencingTableAlias() != $this->name);
+							
+							$parentReferences = array_reverse($parentReferences);	// reverse the order in order to have references starting FROM current table
+							$nbParents = count($parentReferences);
+							for($i = 0; $i < $nbParents; $i++) {
+								$parent = $parentReferences[$i]->getReferencedTableAlias();
+								if(!$parent) {
+									$parent = $this->name;
+								}
+								$target = &$target[$parent];
 							}
-							$parentRef = $this->getReference($parents->getReferencingTableAlias());
-						} while(!empty($parents->getReferencingTableAlias()));
-						
-						$target = &$return[$PKForRes];
-						$nbParents = count($parents);
-						for($i = $nbParents - 1; $i >= 0; $i--) {
-							$target = &$target[$parents[$i]]; 
+							$target = &$target[$oneReference->getReferencedTableAlias()];
+						} else {
+							// we add it directly to our return array
+							$target = &$return[$PKForRes][$oneReference->getReferencedTableAlias()];
 						}
-						$target = &$target[$aliasName];
 					} else {
 						$target = &$return[$PKForRes][$aliasName];
 					}
