@@ -92,6 +92,13 @@ abstract class user {
 		return $this->groups;
 	}
 	
+	public function getData($name) {
+		if(!empty($this->data[$name])) {
+			return $this->data[$name];
+		}
+		return null;
+	}
+	
 	public function hasGroup($groupName) {
 		if(!is_array($groupName)) {
 			$groupName = array($groupName);
