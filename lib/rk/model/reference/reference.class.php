@@ -208,6 +208,10 @@ class reference {
 		$this->referencingTableAlias = $alias;
 	}
 	
+	public function setReferencedTableAlias($alias) {
+		$this->referencedTableAlias = $alias;
+	}
+	
 	public function hasMany() {
 		return $this->hasMany;
 	}

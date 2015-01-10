@@ -26,7 +26,6 @@ class manager {
 	
 	
 	public function __construct() {
-// 		var_dump($_SERVER);
 		if(!empty(self::$instance)) {
 			throw new \rk\exception('manager instance already running');
 		}

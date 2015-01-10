@@ -152,7 +152,6 @@ class filters extends \rk\form {
 		
 		$this->setOperatorsForWidget($type, $widgetParams);
 		
-		// var_dump($type, $widgetParams);
 		return array($fieldName, $type, $widgetParams);
 	}
 	

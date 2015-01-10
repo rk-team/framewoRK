@@ -483,7 +483,7 @@ class createClass {
 							// key does not exist at all
 							
 							$xmlSource = $doc->createElement('source');
-							$xmlSource->setAttribute('source', $keyName);
+							$xmlSource->setAttribute('key', $keyName);
 							
 							foreach($languages as $oneLanguage) {
 								$xmlTrans = $doc->createElement('trans');

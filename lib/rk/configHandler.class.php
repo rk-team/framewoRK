@@ -74,28 +74,7 @@ class configHandler {
 	
 	
 	public function loadConfig() {
-		//Recuperation du cache si possible
-// 		$this->params = dsCache::getData($this->configCacheKey);
-// 		if ($this->configParams === null) {
-				
-// 			$defaultParams = file_get_contents($this->defaultConfigPath);
-			// on ajoute la config par défaut dans $this->configParams à l'index "base/config"
-			$this->parseContent('base/config', $this->defaultConfigPath);
-				
-// 			$apps = dsApplication::getApplications();
-// 			foreach($apps as $oneApp) {
-				// pour chaque appli, on parse le fichier de conf et on l'ajoute dans $this->configParams[<nom de l'app>]
-// 				$configPath = dsApplication::getRootDir() .'app/' . $oneApp . '/' . self::$CONF_PATH . '/config.ini';
-// 				$content = file_get_contents($configPath);
-// 				if(!empty($content)) {
-// 					$this->parseContent($defaultParams, $oneApp, $this->defaultConfigPath);
-// 					$this->parseContent($content, $oneApp, $configPath);
-// 				}
-// 			}
-// 	var_dump($this->params);
-			//On la met en cache
-// 			dsCache::setData($this->configCacheKey, $this->configParams);
-// 		}
+		$this->parseContent('base/config', $this->defaultConfigPath);
 	}
 	
 	private function parseContent($appName, $filePath) {

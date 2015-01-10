@@ -59,7 +59,7 @@
 		<tbody>
 		<?php foreach($data as $oneData): ?>
 			<tr>
-			<?php foreach($columns as $colName => $oneColumn): //var_dump($oneColumn, $oneData);die();?>
+			<?php foreach($columns as $colName => $oneColumn): ?>
 				<td data-col="<?php echo $oneColumn->getName() ?>" data-table="<?php echo $oneColumn->getTable() ?>"><?php echo $oneColumn->getOutput($oneData); ?></td>
 			<?php endforeach; ?>
 			</tr>

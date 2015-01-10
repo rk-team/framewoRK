@@ -164,6 +164,9 @@ class date extends \DateTime {
 		$format = self::getDBFormat($withTime);
 		
 		$date = self::get($value, null, $format);
+		if(!$withTime) {
+			$date->setTime(0, 0, 0);
+		}
 		
 		return $date;
 	}
@@ -172,6 +175,9 @@ class date extends \DateTime {
 		$format = self::getUserFormat($withTime);
 		
 		$date = self::get($value, null, $format);
+		if(!$withTime) {
+			$date->setTime(0, 0, 0);
+		}
 		
 		return $date;
 	}

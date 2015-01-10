@@ -2,7 +2,6 @@ rk = {
 	ajax: {},
 	box: {},
 	event: {},
-	i18n: {},
 	util: {
 		i18n: {
 			translations: {}

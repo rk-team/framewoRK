@@ -337,8 +337,6 @@ class form {
 	
 	public function setValue($widgetName, $value) {
 		$this->widgets[$widgetName]->setValue($value);
-		
-// 		var_dump('setValue', $this->getValues());
 	}
 	
 	public function getName() {
@@ -596,8 +594,6 @@ class form {
 		}
 		
 		$this->widgets = $orderedWidgets;
-		
-// 		var_dump($this->widgets);
 	}
 	
 	

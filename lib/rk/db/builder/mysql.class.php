@@ -28,7 +28,6 @@ class mysql extends \rk\db\builder {
 				$value = null;
 			}
 		}
-		
 		return $value;
 	}
 

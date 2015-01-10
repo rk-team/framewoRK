@@ -3,7 +3,7 @@
 namespace rk\app;
 
 abstract class action {
-	
+
 	protected
 		$tplParams = array(),	// params utilisés dans le template et remplis par la fonction execute
 		$params = array(),		// params d'entrée
@@ -19,6 +19,8 @@ abstract class action {
 		$templateFileName,
 		$templateFullPath,
 		$htmlTitle,
+		$requiresGroup = array(),	// list of groups required to display action
+		$requiresAuth = false,		// weither user has to be auth to display action
 		$outputWith;
 	
 	abstract function execute();

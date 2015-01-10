@@ -230,92 +230,6 @@ abstract class pager {
 		$this->initColumnsFromModelAttributes($this->getModel());
 		
 		$this->initColumnsFromModelReferences($this->getModel());
-		
-		
-// 		// add column for each attribute of the model
-// 		foreach($this->getModel()->getAttributes() as $oneAttr) {
-// 			if($oneAttr->getName() != $this->getModel()->getPK()) {
-// 				$params = array(
-// 					'name' 			=> $oneAttr->getName(),
-// 					'label'			=> $this->getI18nKeyPrefixe() . '.' . $oneAttr->getName(),
-// 					'table'			=> $this->getModel()->getTableName(), 
-// 				);
-	
-// 				$this->setColumn($params);
-// 			}
-// 		}
-		
-		// add columns for references
-// 		$references = $this->getModel()->getReferences();
-// 		foreach($references as $refName => $oneRef) {
-// 			$fields = $oneRef->getFields();
-			
-// 			if($refName == 'i18n') {
-// 				$params = array(
-// 					'name' 			=> 'nb_i18n',
-// 					'label'			=> 'nb_i18n',
-// 					'table'			=> $oneRef->getReferencedTable(), 
-// 				);
-				
-// 				$params['formatterParams'] = array( 
-// 					'table'			=> $oneRef->getReferencedTable(),
-// 				);
-// 				$params['formatter'] = function($row, $params) {
-// // 					var_dump($params);die();
-// 					return count($row[$params['table']]);
-// 				};
-// 				$this->setColumn($params);
-				
-// 				$params = array(
-// 					'name' 			=> 'existing_i18n',
-// 					'label'			=> 'existing_i18n',
-// 					'table'			=> $oneRef->getReferencedTable(), 
-// 				);
-				
-// 				$params['formatterParams'] = array( 
-// 					'table'			=> $oneRef->getReferencedTable(),
-// 					'languageField'	=> \rk\manager::getConfigParam('db.' . $this->getModel()->getDbConnectorName() . '.i18n.language_field')
-// 				);
-// 				$params['formatter'] = function($row, $params) {
-// 					$list = '';
-					
-// 					if(!empty($row[$params['table']])) {
-// 						foreach($row[$params['table']] as $oneI18nRow) {
-// 							$list .= ' ' . $oneI18nRow[$params['languageField']];
-// 						}
-// 					}
-// 					return $list;
-// 				};
-// 				$this->setColumn($params);
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-// 			} elseif(!$oneRef->hasMany()) {
-// 				// reference is one->one, and we only have 1 field : we replace the column from base model by this new column
-// 				$params = array(
-// 					'name' 			=> $oneRef->getReferencingField(),
-// 					'label'			=> $this->getModel()->getDbConnectorName() . '.' . $oneRef->getReferencedTable() . '.' . $oneRef->getDisplayField(),
-// 					'table'			=> $oneRef->getReferencedTable(), 
-// 				);
-				
-// 				$params['formatterParams'] = array(
-// 					'table'	=> $oneRef->getReferencedTableAlias(), 
-// 					'field'	=> $oneRef->getDisplayField(),
-// 				);
-// 				$params['formatter'] = function($row, $params) {
-// 					return $row[$params['table']][$params['field']];
-// 				};
-// 				$this->setColumn($params);
-// 			}
-// 		}
-		
 	}
 	
 	protected function initFilters(\rk\db\table $table) {
@@ -404,7 +318,6 @@ abstract class pager {
 	
 	protected function orderColumns(array $orderedColumnNames) {
 		$newColumns = array();
-// 		var_dump($this->columns);
 		foreach($orderedColumnNames as $oneColumnName) {
 			if(empty($this->columns[$oneColumnName])) {
 				throw new \rk\exception('unknown column', array($oneColumnName));
@@ -460,7 +373,6 @@ abstract class pager {
 	
 	public function getOutput() {
 		$this->retrieveData();
-// 		var_dump($this);
 		$paginationLinks = array();
 		if ($this->displayPagination) {
 			$paginationLinks = $this->computePaginationLinks();
@@ -548,9 +460,9 @@ abstract class pager {
 		if ($this->data === null) {
 			
 			$table = $this->getTable();
-			$method = $this->tableConfigureMethod;
-			if(method_exists($table, $method)) {
-				$table->$method();
+			$configureMethod = $this->tableConfigureMethod;
+			if(method_exists($table, $configureMethod)) {
+				$table->$configureMethod();
 			}
 			$this->initFilters($table);
 			
@@ -606,12 +518,7 @@ abstract class pager {
 			$method = $this->tableRetrieveMethod;	
 	
 			$this->data = $table->$method($criteriaSet, $this->params);
-// 			$this->initFilters($table);
-// 			var_dump($this->data);
-			// initialize filters with the instance of table that we used to query. this way, we can get any filter that might have been added to the table
-// 			$this->formFilters->handleCriterias($this->requestParams, array('defaults' => $defaults));
-			
-			
+
 			if ($this->displayPagination) {
 				$this->nbMatches = $table->getCount($criteriaSet, $this->params);
 			}

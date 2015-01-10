@@ -18,6 +18,8 @@
 			
 			if (!rk.util.isEmpty(oParams.sLanguage)) {
 				this.sLanguage = oParams.sLanguage;
+			} else {
+				this.sLanguage = rk.util.i18n.language;
 			}
 			
 			this.oParams = oParams;

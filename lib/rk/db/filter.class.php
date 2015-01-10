@@ -104,9 +104,6 @@ abstract class filter {
 			FROM ' . $referencedTableName . ' 
 			WHERE ' . $clause . ' 
 				AND ' . $referencedTableName . '.' .  $ref->getReferencedField() . ' = ' . $table->getName() . '.' . $ref->getReferencingField() . ')';
-			
-// 			$clause = '';
-// 			var_dump($ref, $clause);
 		}
 		
 		return array($clause, $value);

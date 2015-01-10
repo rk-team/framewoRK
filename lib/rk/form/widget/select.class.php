@@ -29,6 +29,7 @@ class select extends \rk\form\widget {
 	public function setOptions() {
 		
 		$options = $this->getParam('options');
+		$optionsCriterias = $this->getParam('optionsCriterias');
 		if(empty($options)) {
 			$options = array();
 			
@@ -37,8 +38,11 @@ class select extends \rk\form\widget {
 				$field = $reference->getDisplayField();
 				if(!$reference->hasMany()) {
 					$table = $reference->getReferencedModel()->getTable();
-					
-					$options = $table->getSelectOptions(array('fieldName' => $field));
+					$criterias = array();
+					if(!empty($optionsCriterias)) {
+						$criterias = $optionsCriterias;
+					}
+					$options = $table->getSelectOptions(array('fieldName' => $field), $criterias);
 				}
 			}
 		}

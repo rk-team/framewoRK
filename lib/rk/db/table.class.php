@@ -123,7 +123,7 @@ abstract class table {
 		$model = $reference->getReferencedModel();
 		foreach($model->getAttributes() as $attrName => $attr) {
 			
-			$filterName = $model->getTableName() . '.' . $attrName;
+			$filterName = $reference->getReferencedTableAlias() . '.' . $attrName;
 
 			$filterParams = array(
 				'modelName'		=> get_class($model), 
@@ -304,7 +304,7 @@ abstract class table {
 	
 	protected function formatObjects($res) {
 		$return = array();
-		
+
 		foreach($res as $oneRes) {
 			$obj = $this->getModel()->getObject($oneRes);		
 			$return[] = $obj;
@@ -417,7 +417,7 @@ abstract class table {
 		return $return;
 	}
 	
-	public function getSelectOptions(array $params = array(), array $criterias = array()) {
+	public function getSelectOptions(array $params = array(), $criterias = array()) {
 		if(empty($params['fieldName'])) {
 			throw new \rk\exception('no fieldName given');
 		}
