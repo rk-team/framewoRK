@@ -44,8 +44,10 @@
 			this.oParams.oJqueryParams.alwaysSetTime = false;
 			this.buildWidget();
 			
-			$(this.oDatePicker).datepicker({ dateFormat: 'yyyy-mm-dd' });
-			$(this.oDatePicker).datepicker('setDate', $(this.oContainer).val());
+			if(!rk.util.isEmpty($(this.oContainer).val())) {
+				$(this.oDatePicker).datepicker({ dateFormat: 'yyyy-mm-dd' });
+				$(this.oDatePicker).datepicker('setDate', $(this.oContainer).val());				
+			}
 			
 			//We change the language
 			if(!rk.util.isEmpty(this.sLanguage) && (this.sLanguage != 'en')) {
