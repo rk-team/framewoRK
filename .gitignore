@@ -6,3 +6,4 @@ ressources/i18n/user/*
 ressources/templates/user/*
 lib/user/*
 app/*
+app/config.ini
