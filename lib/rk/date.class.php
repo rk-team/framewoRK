@@ -4,6 +4,7 @@ namespace rk;
 
 class date extends \DateTime {
 	
+	protected $withTime = true;
 
 	/**
 	 * builds an \rk\date with given values
@@ -130,9 +131,12 @@ class date extends \DateTime {
 		return $return;
 	}
 	
+	public function setWithTime($withTime) {
+		$this->withTime = $withTime;
+	}
 	
 	public function __toString() {
-		return $this->userFormat();
+		return $this->userFormat($this->withTime);
 	}
 	
 	public static function getDBFormat($withTime = true) {

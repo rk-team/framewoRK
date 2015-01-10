@@ -56,7 +56,7 @@ abstract class widget {
 		} elseif($name == 'required') {
 			$this->required = $value;
 		} elseif($name == 'value') {
-			$this->value = $value;
+			$this->setValue($value);
 		} elseif($name == 'placeholder') {
 			$this->placeholder = $value;
 		} elseif($name == 'showRequiredMark') {
@@ -237,7 +237,7 @@ abstract class widget {
 	}
 	
 	public function validate($value) {
-		$this->value = $value;
+		$this->setValue($value);
 		
 		$this->isValid = $this->checkValidity($value);
 

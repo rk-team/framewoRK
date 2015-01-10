@@ -31,6 +31,7 @@
 		},
 		
 		initWidget: function() {
+			var oDate;
 			// re-init of datepicker container to avoid jquery bug around refresh
 			if($('#ui-datepicker-div').length == 1) {
 				$.datepicker.dpDiv = $('#ui-datepicker-div');					
@@ -43,12 +44,25 @@
 			this.oParams.oJqueryParams.alwaysSetTime = false;
 			this.buildWidget();
 			
+//			console.log('setting to', $(this.oContainer).val());
+			$(this.oDatePicker).datepicker({ dateFormat: 'yyyy-mm-dd' });
+			$(this.oDatePicker).datepicker('setDate', $(this.oContainer).val());
+			
+//			oDate = $(this.oDatePicker).datepicker('getDate');
+			
+			console.log('oDate is', oDate);
 			//We change the language
 			if(!rk.util.isEmpty(this.sLanguage) && (this.sLanguage != 'en')) {
 				//"en" is default we don't need to switch
 				$(this.oDatePicker).datepicker('option', $.datepicker.regional[this.sLanguage]);
-				$(this.oContainer).val('');
+//				$(this.oDatePicker).datepicker({dateFormat: $.datepicker.regional[this.sLanguage].dateFormat});
+				
+//				$(this.oDatePicker).datepicker('setDate', oDate);
+				
+//				$(this.oContainer).val('');
 			}
+			
+			console.log('getDate is', $(this.oDatePicker).datepicker('getDate'));
 			
 			if(rk.util.isEmpty(this.oParams.bNoTextDisable)) {
 				this.disableTextField();

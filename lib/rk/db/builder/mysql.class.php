@@ -18,6 +18,7 @@ class mysql extends \rk\db\builder {
 		if($type == 'date') {
 			try {
 				$value = \rk\date::createFromDB($value, false);
+				$value->setWithTime(false);
 			} catch(\rk\exception\invalidFormat $e) {
 				$value = null;
 			}
