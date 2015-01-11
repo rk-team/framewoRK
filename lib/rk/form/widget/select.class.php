@@ -26,6 +26,14 @@ class select extends \rk\form\widget {
 		$this->showEmptyOption = $value;
 	}
 	
+	public function useLabelAsEmptyOption($label = null) {
+		if(empty($label)) {
+			$label = i18n($this->getParam('label'));
+		}
+		$this->setParam('labelAsEmptyOption', $label);
+		$this->setParam('label', '');
+	}
+	
 	public function setOptions() {
 		
 		$options = $this->getParam('options');
@@ -47,7 +55,15 @@ class select extends \rk\form\widget {
 			}
 		}
 		
-		if(!empty($this->showEmptyOption)) {
+		if(!empty($this->getParam('labelAsEmptyOption'))) {
+			$newOptions = array(
+				'' => $this->getParam('labelAsEmptyOption')
+			);
+			foreach($options as $key => $value) {
+				$newOptions[$key] = $value;
+			}
+			$options = $newOptions;
+		} elseif(!empty($this->showEmptyOption)) {
 			$newOptions = array(
 				'' => ''
 			);

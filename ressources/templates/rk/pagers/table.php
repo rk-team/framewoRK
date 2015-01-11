@@ -13,6 +13,7 @@
 			<?php echo i18n('pager.nb_matches', array('nb' => $nbMatches)) ?> -
 			<?php echo i18n('pager.page') . ' : ' . $currentPage . ' / ' . $nbPages; ?> 
 		</div>
+		<?php if($nbPages > 1): ?>
 		<div class="links">
 			<?php if(!empty($paginationLinks['left'])): ?>
 			<div class="left">
@@ -36,6 +37,7 @@
 			</div>
 			<?php endif; ?>
 		</div>
+		<?php endif; ?>
 	</div>
 	<?php endif;?>
 	<?php if(!empty($data)): ?>
