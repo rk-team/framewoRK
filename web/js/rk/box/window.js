@@ -184,7 +184,14 @@
 		},
 		
 		refreshPosition: function() {
-			rk.util.centerNode(this.oContainer);
+			if(!rk.util.isEmpty(this.oParams.oPosition)
+					&& !rk.util.isEmpty(this.oParams.oPosition.iLeft) && !rk.util.isEmpty(this.oParams.oPosition.iTop)) {
+				$(this.oContainer)
+					.css('top', this.oParams.oPosition.iTop)
+					.css('left', this.oParams.oPosition.iLeft);
+			} else {
+				rk.util.centerNode(this.oContainer);
+			}
 		},
 		
 		ajaxSuccessHandler: function(sMsg) {

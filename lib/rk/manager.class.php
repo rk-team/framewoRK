@@ -259,6 +259,13 @@ class manager {
 		
 		return $appObj->includeAction($module, $action, $params);
 	}
+	
+	
+	
+	public static function redirect($url) {
+		header('Location: ' . $url);
+		exit;
+	}
 
 	
 }

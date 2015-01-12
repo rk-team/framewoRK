@@ -178,10 +178,8 @@ abstract class action {
 	
 	
 	public function redirect($url) {
-		header('Location: ' . $url);
-		exit;
+		\rk\manager::redirect($url);
 	}
-	
 	
 	public function markAsIncluded() {
 		$this->isIncluded = true;
@@ -232,7 +230,7 @@ abstract class action {
 	}
 
 	/**
-	 * @var \rk\form
+	 * @return \rk\form
 	 */
 	protected function getForm($formClass, $formValues = array(), array $formParams = array()) {
 		
@@ -249,13 +247,13 @@ abstract class action {
 	}
 	
 	/**
-	 * @var \rk\form
+	 * @return \rk\form
 	 */
 	public function getNewForm($formClass, $resquestParams = array(), array $formParams = array()) {	
 		return $this->getForm($formClass, $resquestParams, $formParams);
 	}
 	/**
-	 * @var \rk\form
+	 * @return \rk\form
 	 */
 	public function getEditForm($object, array $formParams = array()) {
 		$class = get_class($object);

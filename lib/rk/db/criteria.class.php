@@ -11,7 +11,9 @@ class criteria {
 		$params;
 	
 	public function __construct($name, $value, $operator = null, array $params = array()) {
-		
+		if($value instanceof \rk\date) {
+			$value = $value->dbFormat();
+		}
 		if (is_object($value)) {
 			throw new \rk\exception('invalid param', array('value' => $value));
 		}

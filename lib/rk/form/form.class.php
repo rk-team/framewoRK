@@ -328,9 +328,11 @@ class form {
 	}
 	
 	public function setValues($values) {
-		foreach($values as $key => $value) {
-			if(!empty($this->widgets[$key])) {
-				$this->widgets[$key]->setValue($value);
+		if(!empty($values)) {
+			foreach($values as $key => $value) {
+				if(!empty($this->widgets[$key])) {
+					$this->widgets[$key]->setValue($value);
+				}
 			}
 		}
 	}
@@ -468,6 +470,9 @@ class form {
 								$oneSubForm->handleSave();
 							}
 						}
+						
+						$this->setValues($this->getObject());
+						
 						$conn->commit();
 					} catch(\Exception $e) {
 						$conn->rollBack();

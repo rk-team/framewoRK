@@ -55,7 +55,7 @@
 				$(this.oDatePicker).datepicker('option', $.datepicker.regional[this.sLanguage]);
 			}
 						
-			if(rk.util.isEmpty(this.oParams.bNoTextDisable)) {
+			if(!rk.util.isEmpty(this.oParams.bTextDisable)) {
 				this.disableTextField();
 			}
 		},
