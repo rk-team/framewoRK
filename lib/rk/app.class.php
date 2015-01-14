@@ -47,6 +47,10 @@ abstract class app {
 	}
 	
 	
+	public function setLayout($layout) {
+		$this->layout = $layout;
+	}
+	
 	public function getCurrentAppDir() {
 		return \rk\manager::getRootDir() . '/app/' . $this->getAppName();
 	}
@@ -111,7 +115,8 @@ abstract class app {
 			$out .= '<script type="text/rkscript">' . \rk\webLogger::getLogsJSOutput() . '</script>';
 			
 			$out = str_replace('<script type="text/javascript">', '<script type="text/rkscript">', $out);
-			
+		} elseif(false === $this->layout) {
+			$out = $output;
 		} else {
 			// we get the params for the template
 			$tplParams = $this->prepareTplParams($output);

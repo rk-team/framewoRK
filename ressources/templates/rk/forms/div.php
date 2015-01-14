@@ -15,7 +15,7 @@
 		<?php $hiddens = array(); ?>
 		<?php foreach($widgets  as $oneWidget): ?>
 		<?php if(!$oneWidget instanceof \rk\form\widget\hidden): ?>
-		<div class="widget">
+		<div class="widgetContainer">
 			<span class="label"><?php echo $oneWidget->getLabelOutput() ?></span>
 			<span class="widget"><?php echo $oneWidget->getWidgetOutput() ?></span>
 			<span class="error"><?php echo $oneWidget->getErrorOutput() ?></span>

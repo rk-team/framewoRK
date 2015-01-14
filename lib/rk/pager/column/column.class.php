@@ -87,19 +87,11 @@ class column {
 		return $this->table;
 	}
 
-	
-	public function getOutput($data) {
+	protected function checkAndUseFormatter($data) {
 		$formatterParams = array();
 		if (!empty($this->formatterParams)) {
 			$formatterParams = $this->formatterParams;
 		}
-		
-// 		$highlightsForCol = array();
-// 		if(!empty($searchHighlights[$this->identifier])) {
-// 			$highlightsForCol = $searchHighlights[$this->identifier];			
-// 		}
-		
-// 		$formatterParams['highlightsForCol'] = $highlightsForCol;
 		
 		if(!empty($this->formatter)) {
 			$formatter = $this->formatter;
@@ -110,31 +102,20 @@ class column {
 			}			
 		}
 		
-		if(!empty($data[$this->identifier])) {
+		return false;
+	}
+	
+	public function getOutput($data) {
+		$formatted = $this->checkAndUseFormatter($data);
+		
+		if(false !== $formatted) {
+			return $formatted;
+		} elseif(!empty($data[$this->identifier])) {
 			return $data[$this->identifier];
 		}
 		
 		return '';
 	}
-	
-// 	public static function handleSearchHightlights($data, array $highlights = array()) {
-// 		$return = $data;
-// 		foreach($highlights as $one) {
-// 			if($one['operator'] == \rk\db\builder::OPERATOR_EQUAL) {
-// 				if($data == $one['value']) {
-// 					$return = '<span class="highlight">' . $data . '</span>';
-// 				}
-// 			} elseif($one['operator'] == \rk\db\builder::OPERATOR_LIKE) {
-// 				$return = str_replace($one['value'], '<span class="highlight">' . $one['value'] . '</span>', $data);
-// 			} elseif($one['operator'] == \rk\db\builder::OPERATOR_ILIKE) {
-// 				$return = str_ireplace($one['value'], '<span class="highlight">' . $one['value'] . '</span>', $data);
-// 			} else {
-// 				throw new \rk\exception('unhandled operator ' . $one['operator']);
-// 			}
-// 		}
-		
-// 		return $return;
-// 	}
 	
 	public function getSortableLinkURL($URL, $sortOrder) {
 		return htmlentities(urlFor($URL, array('orderSort' => $sortOrder, 'orderColumn' => $this->getName())));

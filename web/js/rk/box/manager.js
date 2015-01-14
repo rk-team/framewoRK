@@ -102,6 +102,9 @@
 			
 			$('a.rkConfirm', oContainer).unbind('click.rkConfirm');
 			$('a.rkConfirm', oContainer).bind('click.rkConfirm', rk.box.confirm.rkLinkClickedHandler);
+			
+			$('a.rkPopup', oContainer).unbind('click.rkPopup');
+			$('a.rkPopup', oContainer).bind('click.rkPopup', rk.box.manager.rkPopupClickedHandler);
 		},
 		
 		getWindowForNode: function(mNode) {
@@ -116,6 +119,22 @@
 			return false;
 		}
 	});
+	
+	rk.box.manager.rkPopupClickedHandler = function(e) {
+		e.preventDefault();
+		
+		var sHeight = 600,
+			sWidth = 600;
+		
+		if($(e.target).attr('data-popupheight')) {
+			sHeight = $(e.target).attr('data-popupheight');
+		}
+		if($(e.target).attr('data-popupwidth')) {
+			sWidth = $(e.target).attr('data-popupwidth');
+		}
+		
+		window.open($(e.target).attr('href'), '', "height=" + sHeight + ",width=" + sWidth);
+	};
 	
 	rk.box.manager.sWindowClass = 'rk-bw';
 	rk.box.manager.oInstance = {};
