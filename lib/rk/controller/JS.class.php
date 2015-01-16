@@ -12,13 +12,14 @@ class JS extends \rk\controller {
 	
 	public function getContent() {
 		$return = '';
-		if (!$this->isDebug()) {
+		
+		if (!$this->isDebug() && $this->minifier != 'none') {
 			$return .= '<script type="text/javascript">';
 		}
 		
 		$return .= parent::getContent();
 		
-		if (!$this->isDebug()) {
+		if (!$this->isDebug() && $this->minifier != 'none') {
 			$return .= '</script>';
 		}	
 		
@@ -136,7 +137,6 @@ class JS extends \rk\controller {
 			}
 		}
 		
-// 		$return .= 'rk.util.i18n.culture = \'fr_FR\';' . "\n";
 		$return .= 'rk.util.i18n.language = \'' . \rk\manager::getUser()->getLanguage() . '\';' . "\n";
 		
 		return $return;

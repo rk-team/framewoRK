@@ -25,14 +25,14 @@ class CSS extends \rk\controller {
 	
 	public function getContent() {
 		$return = '';
-	
-		if (!$this->isDebug()) {
+			
+		if (!$this->isDebug() && $this->minifier != 'none') {
 			$return .= '<style type="text/css" media="screen">';
 		}
 		
 		$return .= parent::getContent();
 		
-		if (!$this->isDebug()) {
+		if (!$this->isDebug() && $this->minifier != 'none') {
 			$return .= '</style>';
 		}
 		
@@ -40,7 +40,7 @@ class CSS extends \rk\controller {
 	}
 	
 	protected function buildOutputForDebug($filePath) {
-		return '<link href="/css/' . $filePath . '" rel="stylesheet" media="all" type="text/css">';
+		return '<link href="/css/' . $filePath . '" rel="stylesheet" media="all" type="text/css">' . "\n";;
 	}
 	
 }
