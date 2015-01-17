@@ -24,6 +24,10 @@
 		<trans lang="fr">Valeur invalide</trans>
 		<trans lang="en">Invalid value</trans>	
 	</source>
+	<source key="form.error.invalid_format">
+		<trans lang="fr">Format invalide</trans>
+		<trans lang="en">Invalid format</trans>	
+	</source>
 	<source key="form.presets_load">
 		<trans lang="fr">Charger</trans>
 		<trans lang="en">Load</trans>

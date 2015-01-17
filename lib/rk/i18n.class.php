@@ -82,7 +82,7 @@ class i18n {
 		}
 
 
-		$pos = strrpos($key, '.');	// i18n keys are formatted like : <database>.<table>.<field>, or <table>.<field>
+		$pos = strpos($key, '.');	// i18n keys are formatted like : <database>.<table>.<field>, or <table>.<field>
 		$catalog = substr($key, 0, $pos);
 		
 		// try to find a translation with given params
@@ -101,7 +101,7 @@ class i18n {
 				$callers[] = str_replace(\rk\manager::getRootDir(), '', $trace[$i]['file']) . ' (line ' . $trace[$i]['line'] . ')';
 			}
 
-			\rk\webLogger::add(array('key' => $key, 'language' => $language, 'callers' => $callers), 'I18N');
+			\rk\webLogger::add(array('key' => $key, 'language' => $language), 'I18N');
 		}
 		
 		// no translation found in given language. We try to find one in the project default language

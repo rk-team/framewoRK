@@ -120,10 +120,11 @@ abstract class controller {
 			\rk\helper\fileSystem::file_put_contents($this->TMP_FILE_PATH, '/** ' . $oneFile . '**/ ' . file_get_contents($oneFile), FILE_APPEND);
 		}
 		
+		$phpCmd = \rk\manager::getConfigParam('cli.php_cmd');
 		
 		if($this->minifier == 'minify') {
 			// launch the minify compressor to get a minified version of files
-			$cmd = 'cd ' . \rk\manager::getRootDir() . '/lib/vendor/minify-2.1.7/min_extras/cli && php minify.php -t ' . $this->extension . ' -o  "' . $this->getCacheFilePath() . '" "' . $this->TMP_FILE_PATH . '" && chmod 775 "' . $this->getCacheFilePath() . '"';			
+			$cmd = 'cd ' . \rk\manager::getRootDir() . '/lib/vendor/minify-2.1.7/min_extras/cli && ' . $phpCmd . ' minify.php -t ' . $this->extension . ' -o  "' . $this->getCacheFilePath() . '" "' . $this->TMP_FILE_PATH . '" && chmod 775 "' . $this->getCacheFilePath() . '"';			
 		} elseif($this->minifier == 'yui-compressor') {
 			// launch the yui compressor to get a minified version of files
 			$cmd = 'cd ' . \rk\manager::getRessourcesDir() . '/binaries && java -jar yuicompressor-2.4.8.jar "' . $this->TMP_FILE_PATH . '" -o  "' . $this->getCacheFilePath() . '" && chmod 775 "' . $this->getCacheFilePath() . '"';
@@ -134,7 +135,6 @@ abstract class controller {
 			$ret = exec($cmd, $output, $returnVar);
 			
 			if ($returnVar !== 0) {
-				var_dump($returnVar, $output, $ret);
 				$out = '';
 				foreach($output as $line) {
 					$out .= '<br />' . $line;

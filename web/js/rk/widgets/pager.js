@@ -220,14 +220,23 @@
 			var oActionTDs = $('td[data-col="actions"]', this.oContainer),
 				oActionLinks,
 				i,
-				iWidth = 0;
+				j,
+				iMaxWidth = 0,
+				iWidthForRow = 0;
 			
 			if(oActionTDs.length > 0) {
-				oActionLinks = $('a', oActionTDs[0]);
-				for(i = 0; i < oActionLinks.length; i++) {
-					iWidth += $(oActionLinks[i]).outerWidth(true);
+				for(j = 0; j < oActionTDs.length; j++) {
+					iWidthForRow = 0;
+					oActionLinks = $('a', oActionTDs[j]);
+					for(i = 0; i < oActionLinks.length; i++) {
+						iWidthForRow += $(oActionLinks[i]).outerWidth(true);
+					}
+					if(iWidthForRow > iMaxWidth) {
+						iMaxWidth = iWidthForRow;
+					}
 				}
-				$('th[data-col="actions"]', this.oContainer).css('width', iWidth);
+				
+				$('th[data-col="actions"]', this.oContainer).css('width', iMaxWidth);
 			}
 		},
 		

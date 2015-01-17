@@ -9,3 +9,4 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+

@@ -482,6 +482,10 @@ class form {
 			}
 		}
 		
+		if($this->isValid) {
+			$this->init();
+		}
+		
 		return $this->isValid;
 	}
 	
@@ -692,6 +696,20 @@ class form {
 	
 	public static function configureAdvancedFilters(\rk\form $form) {
 		self::configureFilters($form);
+	}
+	
+	public function getObjectDifferences() {
+		if($this->originalValues instanceof \rk\object) {
+			$originals = $this->originalValues->getData();
+		} else {
+			$originals = $this->originalValues;
+		}
+		
+		$currentData = $this->getObject()->getData();
+		
+		$diff = array_diff_assoc($currentData, $originals);
+		
+		return $diff;
 	}
 	
 }

@@ -80,6 +80,9 @@ abstract class object implements \ArrayAccess, \Iterator {
 	
 	
 	
+	public function getData() {
+		return $this->data;
+	}
 	
 	
 	protected function getModel() {
@@ -169,13 +172,15 @@ abstract class object implements \ArrayAccess, \Iterator {
 		$table = $this->getModel()->getTable();
 		
 		if(method_exists($this, 'preDelete')) {
-			$this->preDelete();
+			$continue = $this->preDelete();
 		}
 		
-		$table->delete(array($this->getPK() => $this->data[$this->getPK()]));
-		
-		if(method_exists($this, 'postDelete')) {
-			$this->postDelete();
+		if($continue) {
+			$table->delete(array($this->getPK() => $this->data[$this->getPK()]));
+			
+			if(method_exists($this, 'postDelete')) {
+				$this->postDelete();
+			}
 		}
 	}
 }

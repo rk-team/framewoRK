@@ -28,6 +28,12 @@ class requestHandler {
 		if (PHP_SAPI !== 'cli') {
 			$this->requestURL = str_replace('//', '/', $_SERVER['REQUEST_URI']);
 			$this->requestHeaders = apache_request_headers();
+			
+			$upperCaseHeaders = array();
+			foreach($this->requestHeaders as $key => $value) {
+				$upperCaseHeaders[strtoupper($key)] = $value;
+			}
+			$this->requestHeaders = $upperCaseHeaders;
 		}		
 				
 		if(!empty($this->requestFiles)) {
@@ -43,7 +49,7 @@ class requestHandler {
 	
 		// on définit si la requête a été envoyée en AJAX ou en page pleine
 		if(
-				(!empty($this->requestHeaders['X-Requested-With']) && $this->requestHeaders['X-Requested-With'] == 'XMLHttpRequest')
+				(!empty($this->requestHeaders['X-REQUESTED-WITH']) && $this->requestHeaders['X-REQUESTED-WITH'] == 'XMLHttpRequest')
 				||
 				(!empty($this->requestParams['rkForceAjax']))
 		) {
@@ -201,5 +207,4 @@ class requestHandler {
 	public function getOutputFormat() {
 		return $this->outputFormat;
 	}
-	
 }
