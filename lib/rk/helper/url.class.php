@@ -4,6 +4,15 @@ namespace rk\helper;
 
 class url {
 	
+	public static function getAbsoluteUrl($url, array $getParams = array()) {
+		$protocol = 'http';
+	    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off'){
+	        $protocol = 'https';
+	    }
+	   
+	    return $protocol . "://" . $_SERVER['SERVER_NAME'] . self::urlFor($url, $getParams);
+	}
+	
 	public static function urlFor($url, array $getParams = array()) {
 		$return = '';
 		

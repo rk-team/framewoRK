@@ -130,7 +130,7 @@ abstract class widget {
 	 * @desc formatte un valeur retournée par un form (boolean, date, ...)
 	 */	
 	public function getFormattedValue() {
-		$value = '';
+		$value = null;
 		if (!empty($this->value)) {
 			$value = $this->value;
 		}

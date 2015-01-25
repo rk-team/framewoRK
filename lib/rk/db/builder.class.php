@@ -251,6 +251,7 @@ abstract class builder {
 			$whereForCurrentCriteriaSet .= "\n" . $this->_addTab($level) . '(' . "\n";
 		}
 		foreach($criterias as $oneCriteria) {
+// 			var_dump($oneCriteria, $nbCriterias, $nbSubsSet);
 			if($oneCriteria instanceof \rk\db\criteria) {
 				$nbCriterias++;
 				if(!$table->hasFilter($oneCriteria->getName())) {
@@ -260,8 +261,9 @@ abstract class builder {
 				$filter->checkOperator($oneCriteria);
 				list($criteriaWhere, $binds) = $filter->createWherePart($table, $oneCriteria);
 				
-				if($nbCriterias > 1) {
+				if($nbCriterias > 1 || $nbSubsSet > 0) {
 					$whereForCurrentCriteriaSet .= $this->_addTab($level + 1);
+// 					echo '<br />1 : ajout ' . $criteriaSet->getOperator();
 					$whereForCurrentCriteriaSet .= $criteriaSet->getOperator() . "\t";
 				} else {
 					$whereForCurrentCriteriaSet .= $this->_addTab($level + 2);
@@ -277,6 +279,7 @@ abstract class builder {
 			} else {
 				$nbSubsSet++;
 				if($nbSubsSet > 1) {
+// 					echo '<br />2 : ajout ' . $criteriaSet->getOperator();
 					$whereForCurrentCriteriaSet .= $this->_addTab($level + 1) . $criteriaSet->getOperator() . ' ';
 				}
 				$this->_handleCriteriaSet($whereForCurrentCriteriaSet, $bindParams, $level + 1, $table, $oneCriteria);

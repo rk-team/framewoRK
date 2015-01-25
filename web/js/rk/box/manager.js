@@ -124,7 +124,8 @@
 		e.preventDefault();
 		
 		var sHeight = 600,
-			sWidth = 600;
+			sWidth = 600,
+			sName = '';
 		
 		if($(e.target).attr('data-popupheight')) {
 			sHeight = $(e.target).attr('data-popupheight');
@@ -132,8 +133,11 @@
 		if($(e.target).attr('data-popupwidth')) {
 			sWidth = $(e.target).attr('data-popupwidth');
 		}
-		
-		window.open($(e.target).attr('href'), '', "height=" + sHeight + ",width=" + sWidth);
+
+		if($(e.target).attr('target')) {
+			sName = $(e.target).attr('target');
+		}
+		window.open($(e.target).attr('href'), sName, "height=" + sHeight + ",width=" + sWidth);
 	};
 	
 	rk.box.manager.sWindowClass = 'rk-bw';

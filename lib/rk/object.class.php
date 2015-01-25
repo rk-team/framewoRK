@@ -171,6 +171,7 @@ abstract class object implements \ArrayAccess, \Iterator {
 		}
 		$table = $this->getModel()->getTable();
 		
+		$continue = true;
 		if(method_exists($this, 'preDelete')) {
 			$continue = $this->preDelete();
 		}
