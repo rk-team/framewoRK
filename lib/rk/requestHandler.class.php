@@ -24,7 +24,7 @@ class requestHandler {
 		$this->postParams = $_POST;
 		$this->getParams = $_GET;
 		$this->requestFiles = $_FILES;
-		
+
 		if (PHP_SAPI !== 'cli') {
 			$this->requestURL = str_replace('//', '/', $_SERVER['REQUEST_URI']);
 			$this->requestHeaders = apache_request_headers();
@@ -35,7 +35,8 @@ class requestHandler {
 			}
 			$this->requestHeaders = $upperCaseHeaders;
 		}		
-				
+		
+		
 		if(!empty($this->requestFiles)) {
 			// on rattache les données de $_FILES à leurs formulaires d'origine dans requestParams
 			foreach($this->requestFiles as $formName => $data) {
@@ -46,7 +47,6 @@ class requestHandler {
 				}
 			}
 		}
-	
 		// on définit si la requête a été envoyée en AJAX ou en page pleine
 		if(
 				(!empty($this->requestHeaders['X-REQUESTED-WITH']) && $this->requestHeaders['X-REQUESTED-WITH'] == 'XMLHttpRequest')
@@ -140,10 +140,6 @@ class requestHandler {
 		$this->moduleName = $module;
 		$this->actionName = $action;
 
-		$actionClass = '\user\\' . $application . '\modules\\' . $module . '\\' . $action;
-		if (!class_exists($actionClass, true)) {
-			throw new \rk\exception\actionNotFound($actionClass);
-		}
 	}
 
 	public function die404() {
@@ -206,5 +202,28 @@ class requestHandler {
 	
 	public function getOutputFormat() {
 		return $this->outputFormat;
+	}
+	
+	public function getFullUrl() {
+		$url = '';
+
+		$https = false;
+		if(!empty($_SERVER['HTTPS'])) {
+			$url = 'https://';
+			$https = true;
+		} else {
+			$url = 'http://';
+		}
+		
+		$url .= $_SERVER['SERVER_NAME'];
+		
+		if($_SERVER['SERVER_PORT'] != 80
+		|| ($https && $_SERVER['SERVER_PORT'] != 443)) {
+			$url .= ':' . $_SERVER['SERVER_PORT'];
+		}
+		
+		$url .= $_SERVER['REQUEST_URI'];
+		
+		return $url;
 	}
 }

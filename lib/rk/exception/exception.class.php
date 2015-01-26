@@ -20,16 +20,19 @@ class exception extends \Exception {
 	}
 	
 	public function showAndDie() {
-				
-		$manager = manager::getInstance();
+		
+		if(\rk\manager::hasInstance() && \rk\manager::getInstance()->isDevMode()) {
+			$devMode = true;
+		} else {
+			$devMode = false;
+		}
+		
 		if (PHP_SAPI === 'cli') {
 			$cliMode = true;
 		} else {
 			$cliMode = false;
 		}
-	
-		$devMode = $manager->getRequestHandler()->isDevMode();
-			
+
 		$br = '<br />';
 		if($cliMode) {
 			$br = "\n";
@@ -44,7 +47,7 @@ class exception extends \Exception {
 		$error .= 'From file : ' . $this->getFile();
 		$error .= $br;
 		$error .= 'At line : ' . $this->getLine();
-	
+
 		$trace = $this->getTraceAsString();
 		if($cliMode) {
 			$error .= "\n\n" . '__ Stack trace __: ' . "\n". $trace;
@@ -56,11 +59,9 @@ class exception extends \Exception {
 			$error .= '<pre>' . $strParams . '</pre>';
 		}
 	
-		if(!$manager->getRequestHandler()->isAjax()) {
-// 			$app->setLayout('layoutException.php');
-		}
+
 		error_log($error);
-			
+		
 		if(!$devMode) {
 			//Si on est pas en dev on ne donne pas d'info aux hackers
 			if(!$cliMode) {
@@ -77,8 +78,7 @@ class exception extends \Exception {
 				' . \rk\webLogger::getLogsJSOutput() . '
 			}
 			</script>';
-		}
-	
+		}		
 	
 		if(!$cliMode) {
 			header('HTTP/1.1 500 Internal Server Error');

@@ -28,17 +28,26 @@ class autoloader {
 	 * @brief autoloader maison
 	 */
 	public static function __autoload($name) {
+		$found = false;
 		if(!empty(self::$classesPath[$name])) {
-			include (self::$classesPath[$name]);
+// 			include (self::$classesPath[$name]);
+			$found = true;
 		} else {
-			if(class_exists('\rk\manager', false) && \rk\manager::getInstance()->isDevMode() && !self::$alreadyRebuilt) {
+			if(class_exists('\rk\manager', false) && \rk\manager::hasInstance() && \rk\manager::getInstance()->isDevMode() && !self::$alreadyRebuilt) {
 				// try to rebuild cache if class not found AND we are in dev mode AND cache was not rebuilt already
 				self::$alreadyRebuilt = true;
 				self::rebuildCache();
 				if(!empty(self::$classesPath[$name])) {
-					include (self::$classesPath[$name]);
+// 					include (self::$classesPath[$name]);
+					$found = true;
 				}
 			}
+		}
+		
+		if(!$found) {
+			throw new \Exception('autoload error : class ' . $name . ' not found');
+		} else {
+			include (self::$classesPath[$name]);
 		}
 	}
 	
