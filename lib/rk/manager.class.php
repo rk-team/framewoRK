@@ -31,6 +31,12 @@ class manager {
 	private static $instance;
 		
 	
+	/**
+	 * In the __construct, we only initialize the configHandler.
+	 * If we reach self::$instance = $this; it means that the config has been read succesfully, and that the autoloader is working,
+	 * 	so we may suppose that the framewoRK is correctly installed
+	 * @throws \rk\exception
+	 */
 	public function __construct() {
 		if(!empty(self::$instance)) {
 			throw new \rk\exception('manager instance already running');
@@ -38,13 +44,16 @@ class manager {
 		
 		$this->configHandler = new configHandler();
 		
-		// once the config is loaded, we need to save our instance, so that we can access the config params
 		self::$instance = $this;
 	}
 	
 	
 	
-	
+	/**
+	 * In the init we launch other parts of our manager (requestHandler and user) that are installation dependant.
+	 * - the requestHandler calls project code (actions & applications)
+	 * - the user has to be fully customised for each project
+	 */
 	public function init() {
 		$this->requestHandler = new requestHandler();
 		try {
