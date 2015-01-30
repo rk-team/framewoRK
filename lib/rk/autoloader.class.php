@@ -29,14 +29,14 @@ class autoloader {
 	 */
 	public static function __autoload($name) {
 		if(!empty(self::$classesPath[$name])) {
-			include (self::$classesPath[$name]);
+			include (__DIR__ . '/../../' . self::$classesPath[$name]);
 		} else {
 			if(class_exists('\rk\manager', false) && \rk\manager::getInstance()->isDevMode() && !self::$alreadyRebuilt) {
 				// try to rebuild cache if class not found AND we are in dev mode AND cache was not rebuilt already
 				self::$alreadyRebuilt = true;
 				self::rebuildCache();
 				if(!empty(self::$classesPath[$name])) {
-					include (self::$classesPath[$name]);
+					include (__DIR__ . '/../../' . self::$classesPath[$name]);
 				}
 			}
 		}
@@ -82,7 +82,7 @@ class autoloader {
 		foreach($toLoadFiles as $oneToLoad) {
 			$classes = self::getDefinedClassesForFile($oneToLoad);
 			foreach($classes as $oneClass) {
-				$toCache[$oneClass] = $oneToLoad;
+				$toCache[$oneClass] = str_replace(__DIR__ .  '/../../', '', $oneToLoad);
 			}
 		}
 		
