@@ -278,7 +278,7 @@ abstract class builder {
 				}
 			} else {
 				$nbSubsSet++;
-				if($nbSubsSet > 1) {
+				if($nbSubsSet > 1 || $nbCriterias > 0) {
 // 					echo '<br />2 : ajout ' . $criteriaSet->getOperator();
 					$whereForCurrentCriteriaSet .= $this->_addTab($level + 1) . $criteriaSet->getOperator() . ' ';
 				}
