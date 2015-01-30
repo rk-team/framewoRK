@@ -120,9 +120,10 @@ abstract class controller {
 			\rk\helper\fileSystem::file_put_contents($this->TMP_FILE_PATH, '/** ' . $oneFile . '**/ ' . file_get_contents($oneFile), FILE_APPEND);
 		}
 		
-		$phpCmd = \rk\manager::getConfigParam('cli.php_cmd');
 		
 		if($this->minifier == 'minify') {
+			$phpCmd = \rk\manager::getConfigParam('cli.php_cmd', 'php');
+			
 			// launch the minify compressor to get a minified version of files
 			$cmd = 'cd ' . \rk\manager::getRootDir() . '/lib/vendor/minify-2.1.7/min_extras/cli && ' . $phpCmd . ' minify.php -t ' . $this->extension . ' -o  "' . $this->getCacheFilePath() . '" "' . $this->TMP_FILE_PATH . '" && chmod 775 "' . $this->getCacheFilePath() . '"';			
 		} elseif($this->minifier == 'yui-compressor') {

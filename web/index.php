@@ -16,36 +16,47 @@ include('../lib/rk/globalFunctions.php');
 include('../lib/rk/autoloader.class.php');
 \rk\autoloader::init(__DIR__ . '/../cache');
 
-register_shutdown_function("shutdown_handler");
 
+
+
+register_shutdown_function("shutdown_handler");
 set_error_handler("error_handler");
+
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 
 try {
 	// launch manager
 	$manager = \rk\manager::getInstance();
-		
+} catch(\Exception $e) {
+	
+	// exception occured during creation of the manager : we display it no matter what as it corresponds to an installation error
+	print_exception($e);
+	die();
+}
+
+
+ini_set('display_errors', 0);
+
+
+try {
+	$manager->init();
 	
 	// add the request to the webLogs
-	\rk\webLogger::addRequestLog();
-	
+	\rk\webLogger::addRequestLog();	
 	// add user at start
 	\rk\webLogger::addUserLog();
-	
-	
+		
 	
 	// parse request
 	$manager->getRequestAnswer();
 	
 	unset($_SESSION['rkTime']);
-} catch(\rk\exception $e) {
+} catch(\Exception $e) {
 	if($e instanceof \rk\exception) {
 		$e->showAndDie();
 	} else {
 		unset($_SESSION['rkTime']);
-		if(!empty($e->xdebug_message)) {
-			echo('<table>' . $e->xdebug_message . '</table>');
-		} else {
-			var_dump('Unhandled exception occured', $e);
-		}
+		print_exception($e);
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
-namespace user\@app@;
+namespace user\front;
 
 class application extends \rk\app {
-
+	
 }

@@ -6,22 +6,59 @@ function shutdown_handler() {
 		$lastError['type'] == E_ERROR || $lastError['type'] == E_PARSE || $lastError['type'] == E_CORE_ERROR || 
 		$lastError['type'] == E_COMPILE_ERROR || $lastError['type'] == E_USER_ERROR || $lastError['type'] == E_RECOVERABLE_ERROR
 	)) {
-		
-/*		if($lastError['type'] == E_ERROR && class_exists('\rk\manager') && \rk\manager::isDevMode()) {
-			header('HTTP/1.1 500 Internal Server Error');
-			var_dump($lastError);
-			die('An exception has occured');
-		}*/
-		
+
 		log_error($lastError['type'], $lastError['message'], $lastError['file'], $lastError['line']);
 		
-		$script = '<script type="text/rkscript">
-		' . \rk\webLogger::getLogsJSOutput() . '
-		</script>';
+		if(class_exists('\rk\manager', false) && \rk\manager::hasInstance()) {
+			$script = '<script type="text/rkscript">
+			' . \rk\webLogger::getLogsJSOutput() . '
+			</script>';
+		} else {
+			$script = '';
+		}
+		
 		header('HTTP/1.1 500 Internal Server Error');
 		die($script.'An exception has occured');
 	}
 	return false;
+}
+
+
+function print_exception(\Exception $e) {
+	if(!empty($e->xdebug_message)) {
+		$error = '<table>' . $e->xdebug_message . '</table>';
+	} else {
+		
+		if (PHP_SAPI === 'cli') {
+			$cliMode = true;
+		} else {
+			$cliMode = false;
+		}
+
+		$br = '<br />';
+		if($cliMode) {
+			$br = "\n";
+		}
+	
+		$error = 'An exception occured : ';
+		$error .= $br;
+		$error .= $br;
+		$error .= 'Message : ' . $e->getMessage();
+		$error .= $br;
+		$error .= 'From file : ' . $e->getFile();
+		$error .= $br;
+		$error .= 'At line : ' . $e->getLine();
+
+		$trace = $e->getTraceAsString();
+		if($cliMode) {
+			$error .= "\n\n" . '__ Stack trace __: ' . "\n". $trace;
+		} else {
+			$error .= '<pre>Stack trace : ' . $trace . '</pre>';
+		}
+	}
+	
+	error_log($error);
+	echo $error;
 }
 
 function log_error($errno, $errstr, $errfile, $errline) {
@@ -54,6 +91,7 @@ function log_error($errno, $errstr, $errfile, $errline) {
 			throw new \rk\exception('unknown error type');
 	}
 	
+	\rk\fileLogger::add($errstr, $errfile, $errline);
 	\rk\webLogger::add(array('level' => $level, 'error' => $errstr, 'file' => $errfile, 'line' => $errline, 'code' => $errno), 'ERROR');
 	
 }

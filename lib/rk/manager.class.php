@@ -11,10 +11,13 @@ class manager {
 	
 	
 	/**
-	 * @var rk\configHandler
+	 * @var \rk\configHandler
 	 */
 	protected $configHandler;
 	
+	/**
+	 * @var \user\user
+	 */
 	protected $user;
 	
 	/**
@@ -22,24 +25,40 @@ class manager {
 	 */
 	protected $application;
 	
+	/**
+	 * singleton
+	 */
 	private static $instance;
+		
 	
-	
+	/**
+	 * In the __construct, we only initialize the configHandler.
+	 * If we reach self::$instance = $this; it means that the config has been read succesfully, and that the autoloader is working,
+	 * 	so we may suppose that the framewoRK is correctly installed
+	 * @throws \rk\exception
+	 */
 	public function __construct() {
 		if(!empty(self::$instance)) {
 			throw new \rk\exception('manager instance already running');
 		}
-		self::$instance = $this;
 		
 		$this->configHandler = new configHandler();
-		$this->requestHandler = new requestHandler();
 		
+		self::$instance = $this;
+	}
+	
+	
+	
+	/**
+	 * In the init we launch other parts of our manager (requestHandler and user) that are installation dependant.
+	 * - the requestHandler calls project code (actions & applications)
+	 * - the user has to be fully customised for each project
+	 */
+	public function init() {
+		$this->requestHandler = new requestHandler();
 		try {
 			$this->getRequestHandler()->parseRequest();
 		} catch(\rk\exception\actionNotFound $e) {
-			if(self::isDevMode()) {
-				\rk\autoloader::makeCache();
-			}
 			$this->requestHandler->die404();
 		}
 		
@@ -48,7 +67,7 @@ class manager {
 		
 		$this->user = new $userClass();
 	}
-	
+
 	
 	public static function getInstance() {
 		if(empty(self::$instance)) {
@@ -56,6 +75,14 @@ class manager {
 		}
 		
 		return self::$instance;
+	}
+	
+	public static function hasInstance() {
+		if(!empty(self::$instance)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public static function getRootDir() {
@@ -151,6 +178,9 @@ class manager {
 	public static function getRequestURL() {
 		return self::getInstance()->getRequestHandler()->getRequestURL();
 	}
+	public static function getFullURL() {
+		return self::getInstance()->getRequestHandler()->getFullURL();
+	}
 	
 	public static function isDevMode() {
 		return self::getInstance()->getRequestHandler()->isDevMode();
@@ -207,6 +237,15 @@ class manager {
 				\rk\i18n::makeCache();
 			}
 		}
+		
+		
+		
+	
+		$actionClass = '\user\\' . $this->requestHandler->getApplicationName() . '\modules\\' . $this->requestHandler->getModuleName() . '\\' . $this->requestHandler->getActionName();
+		if (!class_exists($actionClass, true)) {
+			throw new \rk\exception\actionNotFound($actionClass);
+		}
+		
 		
 		$out = $this->renderRequest(
 			$this->requestHandler->getApplicationName(), 

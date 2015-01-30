@@ -238,7 +238,7 @@ class i18n {
 			$fullPath = $basePath . '/' . $oneFile;
 			if (is_dir($fullPath)) {
 				self::_makeCache($path . '/' . $oneFile, $extend, $oneFile . '.');
-			} else {
+			} elseif(strpos($oneFile, '.i18n.xml') !== false) {
 				$catalog = str_replace('.i18n.xml', '', $oneFile);
 				
 				$doc = new \DOMDocument();

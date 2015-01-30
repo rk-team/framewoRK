@@ -79,6 +79,14 @@ class configHandler {
 	
 	private function parseContent($appName, $filePath) {
 		
+		if(!file_exists($filePath)) {
+			throw new \rk\exception\startup('config file not found');
+		}
+		
+		if(!is_readable($filePath)) {
+			throw new \rk\exception\startup('config file not readable');
+		}
+		
 		$content = file_get_contents($filePath);
 		
 		$contentSplit = explode("\n", $content);
