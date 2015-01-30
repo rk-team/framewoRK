@@ -40,6 +40,18 @@ class criteriaSet {
 		return false;
 	}
 	
+	public function removeCriteria($name) {
+		foreach($this->criterias as $key => $oneCrit) {
+			if($oneCrit instanceof \rk\db\criteriaSet) {
+				$oneCrit->removeCriteria($name);
+			} else {
+				if($oneCrit->getName() == $name) {
+					unset($this->criterias[$key]);
+				}
+			}
+		}
+	}
+	
 	public function setCriterias(\rk\db\criteriaSet $criteriaSet) {
 		$this->criteriaSet = $criteriaSet;
 	}
