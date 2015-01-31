@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sourceList>
+  <source key="produit_type.id">
+    <trans lang="fr">produit_type.id</trans>
+    <trans lang="en">produit_type.id</trans>
+  </source>
+</sourceList>

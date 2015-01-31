@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sourceList>
+  <source key="produit_type_i18n.id">
+    <trans lang="fr">produit_type_i18n.id</trans>
+    <trans lang="en">produit_type_i18n.id</trans>
+  </source>
+  <source key="produit_type_i18n.produit_type_id">
+    <trans lang="fr">produit_type_i18n.produit_type_id</trans>
+    <trans lang="en">produit_type_i18n.produit_type_id</trans>
+  </source>
+  <source key="produit_type_i18n.nom">
+    <trans lang="fr">produit_type_i18n.nom</trans>
+    <trans lang="en">produit_type_i18n.nom</trans>
+  </source>
+  <source key="produit_type_i18n.langue">
+    <trans lang="fr">produit_type_i18n.langue</trans>
+    <trans lang="en">produit_type_i18n.langue</trans>
+  </source>
+  <source key="produit_type_i18n.description">
+    <trans lang="fr">produit_type_i18n.description</trans>
+    <trans lang="en">produit_type_i18n.description</trans>
+  </source>
+</sourceList>
