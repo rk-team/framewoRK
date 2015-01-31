@@ -1,10 +1,10 @@
 .settings
 .buildpath
 .project
-cache/*
-log/*
-app/*
-lib/user/*
-ressources/i18n/user/*
-ressources/templates/user/*
-web/js/user/*
+cache/
+log/
+app/
+lib/user/
+ressources/i18n/user/
+ressources/templates/user/
+web/js/user/
