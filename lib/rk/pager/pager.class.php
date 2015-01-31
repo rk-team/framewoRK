@@ -382,6 +382,16 @@ abstract class pager {
 		if ($this->displayFilter) {
 			$formFilters = $this->formFilters;
 		}
+		
+		foreach($this->columns as $oneColumn) {
+			if(empty($oneColumn->getFormatter())) {
+				// column has no specific formatter, we check if a <column_name>Formatter exists in the pager object, and use it as our formatter
+				$name = $oneColumn->getName() . 'Formatter';
+				if(method_exists($this, $name)) {
+					$oneColumn->setFormatter(array($this, $name));
+				}
+			}
+		}
 
 		$tplParams = array(
 			'params'		=> $this->params,

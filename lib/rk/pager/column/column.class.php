@@ -77,6 +77,10 @@ class column {
 	public function setFormatter($formatter) {
 		$this->formatter = $formatter;
 	}
+	public function getFormatter() {
+		return $this->formatter;
+	}
+	
 	public function getLabel() {
 		return $this->label;
 	}
