@@ -1,5 +1,6 @@
 .settings
 .buildpath
 .project
+.DS_Store
 cache/
 log/
