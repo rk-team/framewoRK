@@ -4,6 +4,10 @@
 		<trans lang="fr">Valider</trans>
 		<trans lang="en">Validate</trans>	
 	</source>
+	<source key="form.reset_name">
+		<trans lang="fr">Réinitialiser</trans>
+		<trans lang="en">Reset</trans>	
+	</source>
 	<source key="form.success">
 		<trans lang="fr">Succès</trans>
 		<trans lang="en">Success</trans>	

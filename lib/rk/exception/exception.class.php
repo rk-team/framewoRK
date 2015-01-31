@@ -68,6 +68,7 @@ class exception extends \Exception {
 				$error = 'error.exception_occured';
 			}
 		} else {
+			$manager = \rk\manager::getInstance();
 			if(!$manager->getRequestHandler()->isAjax()) {
 				$type = 'javascript';
 			} else {

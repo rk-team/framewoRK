@@ -27,25 +27,35 @@ class form {
 		$errors = array(),
 		$params = array(),
 		$object,
-		$submitName = 'form.submit_name'; //Default value for submit button name
+		$submitName = 'form.submit_name', 	//Default value for submit button
+		$resetName = 'form.reset_name'; 	//Default value for reset button
 				
 	public function __construct($values = array(), $params = array()) {
 		
-		$modelName = get_class($this);
-		if (strpos($modelName, 'user\form') !== false) {
-			$modelName = str_replace('user\form', 'user\model', $modelName);
-			if (class_exists($modelName)) {
-				$this->basedOnModel = $modelName;
+		if(!empty($params['basedOnModel'])) {
+			$this->basedOnModel = $params['basedOnModel'];
+		} else {
+			$modelName = get_class($this);
+			if (strpos($modelName, 'user\form') !== false) {
+				$modelName = str_replace('user\form', 'user\model', $modelName);
+				if (class_exists($modelName)) {
+					$this->basedOnModel = $modelName;
+				}
 			}
-		}		
+		}
+		
 		
 		$this->id = manager::getUniqueId();
 		
 		// default template is the "table" one
 		$this->setTemplate($this->templateName);		
 		
-		// default name is based on class name
-		$this->name = str_replace(array('user\form\\', '\\'), array('', '-'), get_class($this));
+		if(!empty($params['name'])) {
+			$this->name = $params['name'];
+		} else {
+			// default name is based on class name
+			$this->name = str_replace(array('user\form\\', '\\'), array('', '-'), get_class($this));
+		}
 				
 		// default URL is current request URL
 		$this->destination = \rk\manager::getRequestURL();
@@ -125,6 +135,10 @@ class form {
 				$this->submitName = $value;
 			break;
 			
+			case 'resetName':
+				$this->resetName = $value;
+			break;
+			
 			default:
 				$this->params[$name] = $value;
 			break;
@@ -137,11 +151,11 @@ class form {
 		}
 	}
 	
-	protected function markAsSubForm($name) {
-		$this->isSubForm = true;
-		$this->setTemplate('subForm.table.php');
-		$this->setParam('name', $this->name . '_' . $name);
-	}
+// 	protected function markAsSubForm($name) {
+// 		$this->isSubForm = true;
+// 		$this->setTemplate('subForm.table.php');
+// 		$this->setParam('name', $this->name . '_' . $name);
+// 	}
 	
 	public function markAsNoEdit() {
 		$this->setTemplate('tableNoEdit.php');
@@ -154,9 +168,8 @@ class form {
 		}
 	}
 	
-	public function addSubForm($name, \rk\form $form) {
-		$form->markAsSubForm($name);
-		$this->subForms[$name] = $form;
+	public function addSubForm(\rk\form\subForm $form) {
+		$this->subForms[$form->getName()] = $form;
 	}
 	public function getSubForms() {
 		return $this->subForms;
@@ -655,6 +668,7 @@ class form {
 			'params'		=> $this->params,
 			'JSONParams'	=> $JSParams,
 			'submitName'	=> $this->submitName,
+			'resetName'		=> $this->resetName,
 			'dataType'		=> $this->name
 		);
 		

@@ -275,11 +275,15 @@ class createClass {
 				 		}
 				 		
 				 		if(empty($refField)) {
-				 			throw new \rk\exception('cant find FK for i18n');
+				 			throw new \rk\exception('cant find FK for i18n on table ' . $tableName);
 				 		}
 				 		
 				 		$tableHasI18n = true;
-					 	$modelName = $oneDB . '\\' . $i18nTableName;
+				 		if($oneDB != 'default') {
+							$modelName = $oneDB . '\\' . $i18nTableName;
+						} else {
+							$modelName = $i18nTableName;
+						}
 						$refList .= '
 			new \rk\model\reference\i18n(\'i18n\', \'' . $pk . '\', \'' . $modelName . '\', array(
 				\'connector\'			=> \'' . $oneDB . '\',

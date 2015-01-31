@@ -35,8 +35,8 @@
 	<?php if(empty($subFormsOutput)): // no submit button here if there are subForms ?>
 	<div class="buttons">
 		<input type="submit" class="button submit" value="<?php echo i18n($submitName, array(), array('htmlentities' => true)) ?>" />
-		<input type="reset" class="button reset" <?php if(!empty($params['resetName'])) echo 'value="' . i18n($params['resetName'], array(), array('htmlentities' => true)) . '" '; ?> />
-		
+		<input type="reset" class="button reset" value="<?php echo i18n($resetName, array(), array('htmlentities' => true)) ?>" />
+				
 		<?php if(!empty($params['presets'])): ?>
 		<div class="presets">
 			<select>
