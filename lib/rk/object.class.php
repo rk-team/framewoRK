@@ -4,7 +4,7 @@ namespace rk;
 
 abstract class object implements \ArrayAccess, \Iterator {
 	
-	protected static $PK;	// used to store the primary key name
+// 	protected static $PK;	// used to store the primary key name
 	
 	protected $modelName;
 	

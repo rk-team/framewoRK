@@ -247,6 +247,9 @@ abstract class widget {
 	public function addError($msg) {
 		$this->errors[] = $msg;
 	}
+	public function removeErrors() {
+		$this->errors = array();
+	}
 	
 	public function hasError() {
 		if(!empty($this->errors)) {

@@ -480,7 +480,7 @@ abstract class table {
 				$values[$oneAttr->getName()] = $builder->formatValuesForBuilder($values[$oneAttr->getName()], $oneAttr->getType());
 			}
 		}
-		
+
 		list($query, $bindParams) = $builder->buildUpdate($this, $values);
 		
 		$connector = $this->getConnector();

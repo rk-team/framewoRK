@@ -20,7 +20,6 @@ class form {
 		$JSParams = array(),		// associative array of params to be given to JS widget
 		$disabled = false,
 		$subForms = array(),
-		$isSubForm = false,
 		$successMessage,
 		$originalValues = array(),	// values given in constructor
 		$validatedValues = array(),	// values retrieved from web request and valdiated by widgets
@@ -347,6 +346,11 @@ class form {
 					$this->widgets[$key]->setValue($value);
 				}
 			}
+			if($values instanceof \rk\object) {
+				$this->object = $values;
+			} else {
+				$this->object = $this->getModel()->getObject($values);			
+			}
 		}
 	}
 	
@@ -415,6 +419,10 @@ class form {
 			$this->object = $this->getModel()->getObject($this->validatedValues);
 			
 			try {
+				
+				if(!$this->isNew() && empty($this->getObjectDifferences())) {
+					return true;
+				}
 				$this->object->save();
 			} catch(\rk\exception\db\uniqueViolation $e) {
 				$widgetName = $e->getMessage();
@@ -452,22 +460,18 @@ class form {
 			
 			$this->hasBeenSubmitted = true;
 
-					
-// 			if(method_exists($this, 'preValidate')) {
-// 				$this->preValidate($formValues[$this->name]);
-// 			}
-			
 			$this->isValid = $this->validate($formValues[$this->name]);
 			
 			if(!empty($this->subForms)) {
 				foreach($this->subForms as $oneSubForm) {
-					if(!$oneSubForm->handleSubmit($formValues)) {
+					$oneSubForm->handleSubmit($formValues);
+					if($oneSubForm->saveNeeded() && !$oneSubForm->isValid()) {
 						$this->isValid = false;
 					}
 				}
 			}
 			
-			if($this->isValid && !$this->isSubForm) {	// subForm do not call handleSave directly. 
+			if($this->isValid && !$this instanceof \rk\form\subForm) {	// subForm do not call handleSave directly. 
 				// Only the main form calls handlSave, both for him and his subforms, and only if everything is valid
 				if(!empty($this->basedOnModel)) {
 					

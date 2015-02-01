@@ -52,6 +52,10 @@
 		<trans lang="fr">Problème lors de l'upload</trans>
 		<trans lang="en">Upload issue detected</trans>
 	</source>
+	<source key="form.error.no_translation_given_for_i18n">
+		<trans lang="fr">Vous devez saisir au moins une traduction</trans>
+		<trans lang="en">You must set at least one translation</trans>
+	</source>
 	
 	
 	<source key="form.wysiwyg.bold">

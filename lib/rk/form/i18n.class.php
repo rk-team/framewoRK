@@ -53,12 +53,75 @@ class i18n extends \rk\form {
 	}
 	
 	
-	
-	public function save() {
-		parent::save();
+	public function handleSubmit(array $formValues = array(), array $options = array()) {
+		
+		if(!empty($formValues[$this->name])) {
+			if(!empty($formValues['_rkFormId'])) {
+				// retrieves the id of the form before it was submitted (ensure we do not generate a new id each time when the form is ajaxified)
+				$this->id = $formValues['_rkFormId'];
+			}
+			
+			$this->hasBeenSubmitted = true;
+
+			$atLeastOneTranslationValid = false;
+			
+			$this->isValid = $this->validate($formValues[$this->name]);
+			
+			if(!empty($this->subForms)) {
+				foreach($this->subForms as $oneSubForm) {
+					$oneSubForm->handleSubmit($formValues);
+					if($oneSubForm->saveNeeded()) {
+						if(!$oneSubForm->isValid()) {
+							$this->isValid = false;
+						} else {
+							$atLeastOneTranslationValid = true;
+						}
+					} else {
+						$oneSubForm->removeWidgetsError();
+					}
+				}
+			}
+			
+			if(!$atLeastOneTranslationValid) {
+				$this->addError(i18n('form.error.no_translation_given_for_i18n'));
+				$this->isValid = false;
+				return $this->isValid;
+			}
+			
+			if($this->isValid && !$this instanceof \rk\form\subForm) {	// subForm do not call handleSave directly. 
+				// Only the main form calls handlSave, both for him and his subforms, and only if everything is valid
+				if(!empty($this->basedOnModel)) {
+					
+					$conn = \rk\db\manager::get($this->getModel()->getDbConnectorName());
+					
+					try {
+						$conn->beginTransaction();
+						
+						$this->handleSave();
+						
+						if(!empty($this->subForms)) {
+							foreach($this->subForms as $subFormName => $oneSubForm) {
+								$oneSubForm->handleSave();
+							}
+						}
+						
+						$this->setValues($this->getObject());
+						
+						$conn->commit();
+					} catch(\Exception $e) {
+						$conn->rollBack();
+						throw $e;
+					}
+				}
+			}
+		}
+		
+		if($this->isValid) {
+			$this->init();
+		}
+		
+		return $this->isValid;
 	}
-	
-	
 	
 	
 	
