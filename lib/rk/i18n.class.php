@@ -326,4 +326,45 @@ class i18n {
 		
 		return $return;
 	}
+	
+	
+	
+	public static function getPreferedLanguage(array $i18nData) {
+		$lang = \rk\manager::getUser()->getLanguage();
+		if(isset($i18nData[$lang])) {
+			return $lang;
+		}
+		
+		$lang = \rk\manager::getConfigParam('project.default_language');
+		if(isset($i18nData[$lang])) {
+			return $lang;
+		}
+		
+		$keys = array_keys($i18nData);
+		$lang = $keys[0];
+		if(isset($i18nData[$lang])) {
+			return $lang;
+		}
+		
+		return false;
+	}
+	
+	
+	public static function getFieldInPreferedLanguage(array $i18nData, $fieldName) {
+		$lang = self::getPreferedLanguage($i18nData);
+		
+		if(!empty($lang) && isset($i18nData[$lang][$fieldName])) {
+			if($lang == \rk\manager::getUser()->getLanguage()) {
+				return $i18nData[$lang][$fieldName];
+			} else {
+				return '(' . $lang . ') ' . $i18nData[$lang][$fieldName];
+			}
+		}
+		
+		return null;
+	}
+	
+	
+	
+	
 }

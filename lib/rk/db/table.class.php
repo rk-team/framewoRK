@@ -81,7 +81,7 @@ abstract class table {
 		$connector = $this->getConnector();
 		
 		$res = $connector->query($query, $bindParams);
-
+		
 		if(empty($params['countOnly']) && empty($params['PKOnly'])) {
 			$extraSelects = array();
 			if(!empty($params['extraSelects'])) {
@@ -89,11 +89,11 @@ abstract class table {
 			}
 			$this->dispatchResults($res, $extraSelects);
 		}
-		
+				
 		if(!$toArray) {
 			$res = $this->formatObjects($res);
 		}
-		
+				
 		return $res;
 	}
 	
@@ -135,6 +135,22 @@ abstract class table {
 			
 			$this->addFilter($type, $filterName, $filterParams);
 		}
+		
+		
+		if($reference->getReferencedModel()->hasReference('i18n')) {
+			// referencedModel has an i18n reference : we add a reference to it
+			$i18nRef = $reference->getReferencedModel()->getReference('i18n');
+			if($i18nRef->getReferencedTable() != $this->getName()) {
+				$newRef = new \rk\model\reference\i18n($i18nRef->getReferencedTable(), $i18nRef->getReferencingField(), $i18nRef->getReferencedModelName(), array(
+					'parentReferenceName' => $reference->getName(),
+					'referencedField'		=> $i18nRef->getReferencedField(),
+					'hasMany'	=> true,
+					'hydrateBy'	=> $i18nRef->getLanguageField(),
+				));
+				$this->addReference($newRef);
+			}
+		}
+		
 	}
 	public function removeReference($refName) {
 		
@@ -213,6 +229,7 @@ abstract class table {
 					}
 				}
 			}
+			
 			// then we use $refData to add references objects to our return
 			foreach($this->references as $oneReference) {
 				$hydrateBy = $oneReference->getHydrateBy();
@@ -259,7 +276,7 @@ abstract class table {
 					} else {
 						$target = &$return[$PKForRes][$aliasName];
 					}
-					
+										
 					if($oneReference->hasMany()) {
 						if(!empty($hydrateBy)) {
 							$target[$refData[$aliasName][$hydrateBy]] = $refData[$aliasName];
@@ -267,7 +284,11 @@ abstract class table {
 							$target[] = $refData[$aliasName];
 						}
 					} else {
-						$target = $refData[$aliasName];
+						if(empty($target)) {
+							$target = $refData[$aliasName];
+						} else {
+							$target = array_merge($target, $refData[$aliasName]);
+						}
 					}
 					unset($target);
 				}
@@ -433,9 +454,10 @@ abstract class table {
 			$params['limit'] = $this->limitForSelect;
 		}
 		
-		$res = $this->_get($criterias, $params);
+		$res = $this->_get($criterias, $params, false);
 	
 		$return = array();
+
 		foreach($res as $oneRes) {
 			// transform raw array into an object
 			$return[$oneRes[$this->getModel()->getPK()]] = $oneRes[$params['fieldName']];

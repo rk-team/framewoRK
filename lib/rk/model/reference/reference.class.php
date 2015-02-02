@@ -83,7 +83,7 @@ class reference {
 			$this->hydrateBy = $params['hydrateBy'];
 		}
 	}
-		
+
 	public function getReferencingField() {
 		return $this->referencingField;
 	}

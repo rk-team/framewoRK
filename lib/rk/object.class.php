@@ -50,8 +50,24 @@ abstract class object implements \ArrayAccess, \Iterator {
 			return isset($this->data[$offset]) ? $this->data[$offset] : null;
 		}
 	
-		// pas d'attribut existant : on cherche dans related
-		return isset($this->relatedData[$offset]) ? $this->relatedData[$offset] : null;
+		// attribute doesnt exist on object, we search in related data
+		if(isset($this->relatedData[$offset])) {
+			return $this->relatedData[$offset];
+		}
+		
+		// not found in related data : we check if it is an i18n field
+		$model = $this->getModel();
+		$i18nRef = $model->getReference('i18n');
+		if(!empty($i18nRef)) {
+			$index = $i18nRef->getReferencedModel()->getTableName();
+			if(!empty($this->relatedData[$index])) {
+				
+				$preferedI18n = \rk\i18n::getFieldInPreferedLanguage($this->relatedData[$index], $offset);
+				return $preferedI18n;
+			}
+		}
+				
+		return null;
 	}
 	
 	
@@ -84,7 +100,9 @@ abstract class object implements \ArrayAccess, \Iterator {
 		return $this->data;
 	}
 	
-	
+	/**
+	 * @return \rk\model
+	 */
 	protected function getModel() {
 		return \rk\model\manager::get($this->modelName);
 	}

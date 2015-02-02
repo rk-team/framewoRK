@@ -113,6 +113,12 @@ abstract class builder {
 		foreach($references as $oneReference) {
 			$fields = $oneReference->getSelectFields();
 			foreach ($fields as $oneField) {
+				
+				if(empty($oneReference->getReferencedModel()->getAttribute($oneField)) && $oneReference->getReferencedModel()->hasReference('i18n')) {
+					// referenced model does not have a $oneField attribute but it has a i18n reference : we ignore it, as it should be selected on the i18n ref
+					continue;
+				}
+				
 				if(!empty($fieldsSelect)) {
 					$fieldsSelect .= ', ' . "\n";
 				}
