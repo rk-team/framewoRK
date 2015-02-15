@@ -1,0 +1,4 @@
+app/config.ini merge=ours
+app/front/application.class.php merge=ours
+app/front/modules/home/home.class.php merge=ours
+app/front/modules/home/templates/index.php merge=ours
