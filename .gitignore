@@ -4,3 +4,9 @@
 .DS_Store
 cache/
 log/
+app/
+lib/user/
+ressources/i18n/user/
+ressources/templates/user/
+web/css/app/
+web/js/user/
