@@ -5,6 +5,7 @@ namespace rk;
 class webLogger {
 	
 	protected static $logs = array();
+	
 
 	public static function add($data, $type = 'OTHER') {
 		if(is_array($data) && !empty($data['selfDuration'])) {
