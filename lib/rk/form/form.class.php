@@ -41,8 +41,7 @@ class form {
 					$this->basedOnModel = $modelName;
 				}
 			}
-		}
-		
+		}		
 		
 		$this->id = manager::getUniqueId();
 		

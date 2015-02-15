@@ -81,7 +81,7 @@ abstract class table {
 		$connector = $this->getConnector();
 		
 		$res = $connector->query($query, $bindParams);
-		
+
 		if(empty($params['countOnly']) && empty($params['PKOnly'])) {
 			$extraSelects = array();
 			if(!empty($params['extraSelects'])) {
@@ -89,11 +89,11 @@ abstract class table {
 			}
 			$this->dispatchResults($res, $extraSelects);
 		}
-				
+		
 		if(!$toArray) {
 			$res = $this->formatObjects($res);
 		}
-				
+		
 		return $res;
 	}
 	
@@ -229,7 +229,6 @@ abstract class table {
 					}
 				}
 			}
-			
 			// then we use $refData to add references objects to our return
 			foreach($this->references as $oneReference) {
 				$hydrateBy = $oneReference->getHydrateBy();
@@ -276,7 +275,7 @@ abstract class table {
 					} else {
 						$target = &$return[$PKForRes][$aliasName];
 					}
-										
+					
 					if($oneReference->hasMany()) {
 						if(!empty($hydrateBy)) {
 							$target[$refData[$aliasName][$hydrateBy]] = $refData[$aliasName];
@@ -457,7 +456,6 @@ abstract class table {
 		$res = $this->_get($criterias, $params, false);
 	
 		$return = array();
-
 		foreach($res as $oneRes) {
 			// transform raw array into an object
 			$return[$oneRes[$this->getModel()->getPK()]] = $oneRes[$params['fieldName']];
@@ -502,7 +500,7 @@ abstract class table {
 				$values[$oneAttr->getName()] = $builder->formatValuesForBuilder($values[$oneAttr->getName()], $oneAttr->getType());
 			}
 		}
-
+		
 		list($query, $bindParams) = $builder->buildUpdate($this, $values);
 		
 		$connector = $this->getConnector();
