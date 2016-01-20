@@ -5,8 +5,6 @@
 /log
 !/log/.gitkeep
 
-/rk
-
 # Eclipse
 .settings
 .buildpath

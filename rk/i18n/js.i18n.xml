@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sourceList>
+	<source key="js.confirm.are_you_sure">
+		<trans lang="fr">Etes vous sûr ?</trans>
+		<trans lang="en">Are you sure ?</trans>	
+	</source>
+	<source key="js.confirm.validate">
+		<trans lang="fr">Valider</trans>
+		<trans lang="en">Validate</trans>	
+	</source>
+	<source key="js.confirm.cancel">
+		<trans lang="fr">Annuler</trans>
+		<trans lang="en">Cancel</trans>	
+	</source>
+	<source key="js.advancedFilters.summary">
+		<trans lang="fr">Récapitulatif</trans>
+		<trans lang="en">Summary</trans>	
+	</source>
+	<source key="js.advancedFilters.or">
+		<trans lang="fr">Ou</trans>
+		<trans lang="en">Or</trans>	
+	</source>
+	<source key="js.advancedFilters.and">
+		<trans lang="fr">Et</trans>
+		<trans lang="en">And</trans>	
+	</source>
+	<source key="js.advancedFilters.contains">
+		<trans lang="fr">contient</trans>
+		<trans lang="en">containing</trans>
+	</source>
+	<source key="js.advancedFilters.contains_not">
+		<trans lang="fr">ne contient pas</trans>
+		<trans lang="en">not containing</trans>
+	</source>
+</sourceList>

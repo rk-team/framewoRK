@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sourceList>
+	<source key="form.submit_name">
+		<trans lang="fr">Valider</trans>
+		<trans lang="en">Validate</trans>	
+	</source>
+	<source key="form.success">
+		<trans lang="fr">Succès</trans>
+		<trans lang="en">Success</trans>	
+	</source>
+	<source key="form.error.required">
+		<trans lang="fr">Requis</trans>
+		<trans lang="en">Required</trans>	
+	</source>
+	<source key="form.error.required_field">
+		<trans lang="fr">%field% requis</trans>
+		<trans lang="en">%field% required</trans>	
+	</source>
+	<source key="form.error.already_exists">
+		<trans lang="fr">Valeur déjà utilisée</trans>
+		<trans lang="en">Value already exists</trans>	
+	</source>
+	<source key="form.error.invalid_value">
+		<trans lang="fr">Valeur invalide</trans>
+		<trans lang="en">Invalid value</trans>	
+	</source>
+	<source key="form.error.invalid_format">
+		<trans lang="fr">Format invalide</trans>
+		<trans lang="en">Invalid format</trans>	
+	</source>
+	<source key="form.presets_load">
+		<trans lang="fr">Charger</trans>
+		<trans lang="en">Load</trans>
+	</source>	
+	<source key="form.error.file_already_exists">
+		<trans lang="fr">Ce fichier existe déjà</trans>
+		<trans lang="en">File already exists</trans>	
+	</source>
+	<source key="form.error.image.wrong_format">
+		<trans lang="fr">Format d'image inconnu</trans>
+		<trans lang="en">Wrong image format</trans>	
+	</source>
+	<source key="form.error.file.move_error">
+		<trans lang="fr">Erreur de sauvegarde</trans>
+		<trans lang="en">Save error</trans>	
+	</source>
+	<source key="form.error.file.upload">
+		<trans lang="fr">Problème lors de l'upload</trans>
+		<trans lang="en">Upload issue detected</trans>
+	</source>
+	
+	
+	<source key="form.wysiwyg.bold">
+		<trans lang="fr">G</trans>
+		<trans lang="en">B</trans>	
+	</source>
+	<source key="form.wysiwyg.italic">
+		<trans lang="fr">I</trans>
+		<trans lang="en">I</trans>	
+	</source>
+	<source key="form.wysiwyg.color.1">
+		<trans lang="fr">A</trans>
+		<trans lang="en">A</trans>	
+	</source>
+	<source key="form.wysiwyg.color.2">
+		<trans lang="fr">A</trans>
+		<trans lang="en">A</trans>	
+	</source>
+	<source key="form.wysiwyg.color.3">
+		<trans lang="fr">A</trans>
+		<trans lang="en">A</trans>	
+	</source>
+	<source key="form.wysiwyg.color.4">
+		<trans lang="fr">A</trans>
+		<trans lang="en">A</trans>	
+	</source>
+	<source key="form.wysiwyg.create_link">
+		<trans lang="fr">Lien</trans>
+		<trans lang="en">Link</trans>	
+	</source>
+	<source key="form.wysiwyg.justify_center">
+		<trans lang="fr"></trans>
+		<trans lang="en"></trans>	
+	</source>
+	<source key="form.wysiwyg.justify_left">
+		<trans lang="fr"></trans>
+		<trans lang="en"></trans>	
+	</source>
+	<source key="form.wysiwyg.justify_right">
+		<trans lang="fr"></trans>
+		<trans lang="en"></trans>	
+	</source>
+	<source key="form.wysiwyg.ordered_list">
+		<trans lang="fr"></trans>
+		<trans lang="en"></trans>	
+	</source>
+	<source key="form.wysiwyg.unordered_list">
+		<trans lang="fr"></trans>
+		<trans lang="en"></trans>	
+	</source>
+	
+	<source key="form.OK">
+		<trans lang="fr">OK</trans>
+		<trans lang="en">Ok</trans>	
+	</source>
+	<source key="form.cancel">
+		<trans lang="fr">Annuler</trans>
+		<trans lang="en">Cancel</trans>	
+	</source>
+</sourceList>

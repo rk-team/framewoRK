@@ -1,0 +1,1 @@
+<textarea <?php echo $classAttribute . $disabledAttribute ?> name="<?php echo $name ?>" id="<?php echo $id ?>"><?php echo $value ?></textarea>
