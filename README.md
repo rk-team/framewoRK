@@ -1,9 +1,7 @@
 ### Welcome to rk
 
-This project is an early alpha developpement version of what aims to be a PHP + JS framework.
-
-Tutorial (outdated and only available in french at the moment) is here : http://rk-team.github.io/framewoRK/
-
+This project is a an early alpha developpement version of what aims to be a PHP + JS framework.
+Its developpement is more or less frozen for now, but the project is not dead yet. :)
 
 ### Requirements
 
@@ -59,10 +57,4 @@ sudo chmod -R 775 log cache
 
 ### Contribution
 
-When you clone framewoRK.git, you have to run the following command to get rk folder ready to use
-```
-git submodule update --init
-```
-
-You can then work in rk subFolder as it is a standard git repository and push your contribution on you feature branch
-
+The project is actually managed on a private gitlab instalation, but all contributions are nonetheless welcome, so feel free to require access to it.
