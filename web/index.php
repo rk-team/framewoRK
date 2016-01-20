@@ -10,10 +10,10 @@ session_start();
 $_SESSION['rkTime'] = microtime(true);
 
 // include global functions
-include('../lib/rk/globalFunctions.php');
+include('../rk/lib/globalFunctions.php');
 
 // mise en place de l'autoloader
-include('../lib/rk/autoloader.class.php');
+include('../rk/lib/autoloader.class.php');
 \rk\autoloader::init(__DIR__ . '/../cache');
 
 

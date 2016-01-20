@@ -1,1 +1,0 @@
-<input type="password" <?php echo $valueAttribute . $classAttribute . $disabledAttribute . $placeholderAttribute ?> name="<?php echo $name ?>" id="<?php echo $id ?>" />

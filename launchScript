@@ -1,0 +1,56 @@
+#!/bin/bash -e
+
+ARG_LIST=""
+
+if [ ! -d "rk/scripts" ]; then
+	echo -ne "Ce script doit être lancé à la racine du projet !\n"
+	exit 1
+fi
+
+for x in `ls rk/scripts`
+do
+	if [ -d "rk/scripts/$x" ]; then
+		continue;
+	fi
+	
+    TMP_NAME_PHP=${x%.php}
+    TMP_NAME_SH=${x%.sh}
+    if [ $TMP_NAME_PHP = $x ]; then
+	 ARG_LIST="$ARG_LIST\n\t - $TMP_NAME_SH"
+    else
+	 ARG_LIST="$ARG_LIST\n\t - $TMP_NAME_PHP"
+    fi
+done
+
+#Le premier argument
+if [ "$#" -lt "1" ]; then
+	echo -ne "$0, un argument requis parmi :\n $ARG_LIST \n\n\t => suivi des arguments de la commande\n"
+	exit 1
+else
+	#On prepare la commande
+	cmdPHP="rk/scripts/$1.php"
+	cmdBASh="rk/scripts/$1.sh"
+	
+	#On prepare la liste d'argument (tous sauf le premier)
+	i=0
+	for x in $@
+	do
+		if [ $i -gt 0 ]; then
+			cmdArgs="$cmdArgs $x"
+		fi
+		i=`expr $i + 1`;
+	done
+
+	#On lance la commande
+	if [ -f $cmdPHP ]; then
+		php $cmdPHP $cmdArgs
+		exit $?
+	elif [ -f $cmdBASh ]; then
+		$cmdBASh $cmdArgs
+		exit $?
+	else
+		echo -ne "$0 : l'argument $1 fourni ne semble pas correct\n"
+		exit 1
+	fi
+fi
+

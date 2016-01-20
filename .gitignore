@@ -1,12 +1,16 @@
+# Project
+/cache
+!/cache/.gitkeep
+
+/log
+!/log/.gitkeep
+
+/rk
+
+# Eclipse
 .settings
 .buildpath
 .project
+
+# Eclipse MAC
 .DS_Store
-cache/
-log/
-app/
-lib/user/
-ressources/i18n/user/
-ressources/templates/user/
-web/css/app/
-web/js/user/
